@@ -12,7 +12,7 @@ export class UserService {
     baseUrl:string;
     authNavStatusSource;
     authNavStatus;
-    loggedIn:boolean;
+    loggedIn:boolean = false;
 
     constructor(
         private _http:Http,
@@ -20,8 +20,9 @@ export class UserService {
     ) {
         this.baseUrl = _configService.getApiUrl();
         this.authNavStatusSource = new BehaviorSubject<boolean>(false);
+        this.authNavStatusSource.next(this.loggedIn);
         this.authNavStatus = this.authNavStatusSource.asObservable();
-        this.loggedIn = false;
+        this.loggedIn = !!localStorage.getItem("auth_token");
     }
 
     register(email:string, password:string, name:string, surname:string, birthday:Date, gender:string) {
@@ -51,6 +52,6 @@ export class UserService {
     }
 
     isLoggedIn() {
-        return this.isLoggedIn;
+        return this.loggedIn;
     }
 }

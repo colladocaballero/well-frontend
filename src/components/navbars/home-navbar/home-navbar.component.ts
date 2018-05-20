@@ -53,7 +53,7 @@ export class HomeNavbarComponent {
         if (valid) {
             this._userService.login(value.email, value.password).subscribe(
                 result => {
-                    console.log(result);
+                    this._router.navigate(["/me"]);
                 },
                 error => {
                     this.errors = error;
