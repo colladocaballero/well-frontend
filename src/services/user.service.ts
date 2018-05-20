@@ -27,15 +27,14 @@ export class UserService {
     register(email:string, password:string, name:string, surname:string, birthday:Date, gender:string) {
         let body = JSON.stringify({email, password, name, surname, birthday, gender});
         let headers = new Headers({"Content-Type":"application/json"});
-        let options = new RequestOptions({headers: headers});
 
-        return this._http.post(`${this.baseUrl}/register`, body, options).pipe(map((response:any) => true));
+        return this._http.post(`${this.baseUrl}/register`, body, {headers: headers}).pipe(map((response:any) => true));
     }
 
     login(email:string, password:string) {
         let headers = new Headers({"Content-Type":"application/json"});
 
-        return this._http.post(`${this.baseUrl}/login`, JSON.stringify({email, password}), {headers: headers})
+        return this._http.post(`${this.baseUrl}/auth/login`, JSON.stringify({email, password}), {headers: headers})
             .pipe(map((response:any) => response.json()))
             .pipe(map((response:any) => {
                 localStorage.setItem("auth_token", response.auth_token);

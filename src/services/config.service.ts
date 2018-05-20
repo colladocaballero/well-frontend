@@ -5,7 +5,7 @@ export class ConfigService {
     apiUrl:string;
 
     constructor() {
-        this.apiUrl = "http://localhost:57991"
+        this.apiUrl = "http://localhost:57991/api"
     }
 
     getApiUrl():string {

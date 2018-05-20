@@ -1,0 +1,12 @@
+<nav class="navbar navbar-expand-lg navbar-light">
+    <a class="navbar-brand">Well</a>
+    <ul class="navbar-nav mr-auto">
+        <li class="nav-item">Home</li>
+    </ul>
+    
+    <form [formGroup]="loginForm" class="form-inline my-2 my-lg-0">
+        <input type="email" class="form-control form-control-sm mr-sm-2" formControlName="email" placeholder="Email">
+        <input type="password" class="form-control form-control-sm mr-sm-2" formControlName="password" placeholder="Contraseña">
+        <button class="btn btn-primary btn-sm my-2 my-sm-0" (click)="login(loginForm)">Entrar</button>
+    </form>
+</nav>
