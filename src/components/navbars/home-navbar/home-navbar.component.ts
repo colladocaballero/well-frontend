@@ -46,19 +46,23 @@ export class HomeNavbarComponent {
     }
 
     login({value, valid}:{value:Credentials, valid:boolean}) {
-        this.submitted = true;
-        this.isRequesing = true;
-        this.errors = "";
+        if (this.loginForm.valid) {
+            this.submitted = true;
+            this.isRequesing = true;
+            this.errors = "";
 
-        if (valid) {
-            this._userService.login(value.email, value.password).subscribe(
-                result => {
-                    this._router.navigate(["/me"]);
-                },
-                error => {
-                    this.errors = error;
-                }
-            )
+            if (valid) {
+                this._userService.login(value.email, value.password).subscribe(
+                    result => {
+                        this._router.navigate(["/home"]);
+                    },
+                    error => {
+                        this.errors = error;
+                    }
+                )
+            }
+
+            this.loginForm.reset();
         }
     }
 

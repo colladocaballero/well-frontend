@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-import { appRouting } from './dashboard.routing';
-import { AuthGuard } from '../../app/auth.guard';
+import { appRouting } from './home.routing';
+import { AuthGuard } from './auth.guard';
 
 @NgModule({
     imports: [
@@ -15,6 +15,6 @@ import { AuthGuard } from '../../app/auth.guard';
     ]
 })
 
-export class DashboardModule {
+export class HomeModule {
     
 }

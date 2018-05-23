@@ -3,8 +3,10 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { RegisterComponent } from '../components/register/register.component';
 
+import { AuthGuard } from './auth.guard';
+
 const appRoutes:Routes = [
-    {path: '', component: RegisterComponent}
+    {path: '', component: RegisterComponent, canActivate: [AuthGuard]}
 ];
 
 export const appRoutingProviders:any[] = [];

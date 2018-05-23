@@ -36,7 +36,6 @@ export class UserService {
         let headers = new Headers({"Content-Type":"application/json"});
 
         return this._http.post(`${this.baseUrl}/auth/login`, JSON.stringify({email, password}), {headers: headers})
-            .pipe(map((response:any) => response.json()))
             .pipe(map((response:any) => {
                 localStorage.setItem("auth_token", response.auth_token);
                 this.loggedIn = true;
