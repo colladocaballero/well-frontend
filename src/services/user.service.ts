@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+// import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 import { UserRegistration } from '../models/UserRegistration';
 import { ConfigService } from '../services/config.service';
@@ -15,7 +16,7 @@ export class UserService {
     loggedIn:boolean = false;
 
     constructor(
-        private _http:Http,
+        private _httpClient:HttpClient,
         private _configService:ConfigService
     ) {
         this.baseUrl = _configService.getApiUrl();
@@ -27,17 +28,18 @@ export class UserService {
 
     register(email:string, password:string, name:string, surname:string, birthday:Date, gender:string) {
         let body = JSON.stringify({email, password, name, surname, birthday, gender});
-        let headers = new Headers({"Content-Type":"application/json"});
+        let headers = new HttpHeaders({"Content-Type":"application/json"});
 
-        return this._http.post(`${this.baseUrl}/register`, body, {headers: headers}).pipe(map((response:any) => true));
+        return this._httpClient.post(`${this.baseUrl}/register`, body, {headers: headers}).pipe(map((response:any) => true));
     }
 
     login(email:string, password:string) {
-        let headers = new Headers({"Content-Type":"application/json"});
+        let headers = new HttpHeaders({"Content-Type":"application/json"});
 
-        return this._http.post(`${this.baseUrl}/auth/login`, JSON.stringify({email, password}), {headers: headers})
+        return this._httpClient.post(`${this.baseUrl}/auth/login`, JSON.stringify({email, password}), {headers: headers})
             .pipe(map((response:any) => {
                 localStorage.setItem("auth_token", response.auth_token);
+                localStorage.setItem("user_id", response.id);
                 this.loggedIn = true;
                 this.authNavStatusSource.next(true);
                 return true;
@@ -46,6 +48,7 @@ export class UserService {
 
     logOut():void {
         localStorage.removeItem("auth_token");
+        localStorage.removeItem("user_id");
         this.loggedIn = false;
         this.authNavStatusSource.next(false);
     }
