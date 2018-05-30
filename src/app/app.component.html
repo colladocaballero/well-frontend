@@ -1,4 +1,8 @@
-<div>
+<div *ngIf="!_loggedIn">
+	<login-navbar></login-navbar>
+</div>
+
+<div *ngIf="_loggedIn">
 	<home-navbar></home-navbar>
 </div>
 

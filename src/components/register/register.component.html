@@ -25,6 +25,9 @@
                         <label for="txtEmail">Email</label>
                         <input type="email" id="txtEmail" formControlName="email" class="form-control form-control-sm" [ngClass]="{'is-invalid':email.invalid && email.touched}">
                         <div class="invalid-feedback">Campo requerido</div>
+                        <div class="alert alert-danger" [ngStyle]="{'height': '31px', 'padding': '2px 10px 5px 10px', 'margin-top': '5px'}" *ngIf="existingEmail">
+                            <span><i class="fas fa-exclamation-circle icon-margin"></i>Correo en uso</span>
+                        </div>
                         
                     </div>
                     <div class="form-group">
@@ -42,9 +45,8 @@
                     <div class="form-group col">
                         <label for="selectGender">Género</label>
                         <select name="selectGender" formControlName="gender" id="selectGender" class="form-control form-control-sm" [ngClass]="{'is-invalid':gender.invalid && gender.touched}">
-                            <option disabled hidden>Género</option>
-                            <option [value]="Femenino">Femenino</option>
-                            <option [value]="Masculino">Masculino</option>
+                            <option value="" disabled hidden>Género</option>
+                            <option *ngFor="let gender of ['Femenino', 'Masculino']" [value]="gender">{{gender}}</option>
                         </select>
                         <div class="invalid-feedback">Campo requerido</div>
                     </div>

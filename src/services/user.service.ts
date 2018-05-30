@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
+// import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 import { UserRegistration } from '../models/UserRegistration';
 import { ConfigService } from '../services/config.service';
 
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject} from 'rxjs';
 import { map } from 'rxjs/operators';
+import { HttpResponseModel } from '../models/HttpResponseModel';
 
 @Injectable()
 export class UserService {
@@ -15,37 +17,48 @@ export class UserService {
     loggedIn:boolean = false;
 
     constructor(
-        private _http:Http,
+        private _httpClient:HttpClient,
         private _configService:ConfigService
     ) {
         this.baseUrl = _configService.getApiUrl();
         this.authNavStatusSource = new BehaviorSubject<boolean>(false);
         this.authNavStatusSource.next(this.loggedIn);
         this.authNavStatus = this.authNavStatusSource.asObservable();
-        this.loggedIn = !!localStorage.getItem("auth_token");
+        this.loggedIn = !!localStorage.getItem("authToken");
     }
 
     register(email:string, password:string, name:string, surname:string, birthday:Date, gender:string) {
         let body = JSON.stringify({email, password, name, surname, birthday, gender});
-        let headers = new Headers({"Content-Type":"application/json"});
+        let headers = new HttpHeaders({"Content-Type":"application/json"});
 
-        return this._http.post(`${this.baseUrl}/register`, body, {headers: headers}).pipe(map((response:any) => true));
+        return this._httpClient.post(`${this.baseUrl}/register`, body, {headers: headers})
+            .pipe(map((response:HttpResponseModel) => {
+                if (response.statusCode == 201) {
+                    localStorage.setItem("authToken", response.data.authToken);
+                    localStorage.setItem("userId", response.data.id);
+                    this.loggedIn = true;
+                    this.authNavStatusSource.next(true);
+                }
+        }));
     }
 
     login(email:string, password:string) {
-        let headers = new Headers({"Content-Type":"application/json"});
+        let headers = new HttpHeaders({"Content-Type":"application/json"});
 
-        return this._http.post(`${this.baseUrl}/auth/login`, JSON.stringify({email, password}), {headers: headers})
-            .pipe(map((response:any) => {
-                localStorage.setItem("auth_token", response.auth_token);
-                this.loggedIn = true;
-                this.authNavStatusSource.next(true);
-                return true;
+        return this._httpClient.post(`${this.baseUrl}/auth/login`, JSON.stringify({email, password}), {headers: headers})
+            .pipe(map((response:HttpResponseModel) => {
+                if (response.statusCode == 200) {
+                    localStorage.setItem("authToken", response.data.authToken);
+                    localStorage.setItem("userId", response.data.id);
+                    this.loggedIn = true;
+                    this.authNavStatusSource.next(true);
+                }
             }));
     }
 
     logOut():void {
-        localStorage.removeItem("auth_token");
+        localStorage.removeItem("authToken");
+        localStorage.removeItem("userId");
         this.loggedIn = false;
         this.authNavStatusSource.next(false);
     }

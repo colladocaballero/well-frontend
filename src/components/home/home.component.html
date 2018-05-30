@@ -1,3 +1,6 @@
-<div class="container">
-    <h3>Home</h3>
+<div class="container-fluid">
+    <div [ngStyle]="{'width': '200px'}">
+        <img *ngIf="_userDetails" class="rounded" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}" width="200" height="200">
+        <strong>{{_userDetails?.name}} {{_userDetails?.surname}}</strong>
+    </div>
 </div>
