@@ -7,8 +7,8 @@ import { UserService } from '../../../services/user.service';
 import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
-    selector: "login-navbar",
-    templateUrl: "login-navbar.component.html"
+    selector: 'login-navbar',
+    templateUrl: 'login-navbar.component.html'
 })
 
 export class LoginNavbarComponent {
@@ -21,7 +21,8 @@ export class LoginNavbarComponent {
 	errors:string;
 	isRequesing:boolean;
 	submitted:boolean;
-	credentials:Credentials;
+    credentials:Credentials;
+    loginFailed:boolean;
 
 	constructor(
 		private _userService:UserService,
@@ -29,8 +30,9 @@ export class LoginNavbarComponent {
 		private _activatedRoute:ActivatedRoute
 	) {
 		this.submitted = false;
-        this.credentials = {email:"", password:""};
+        this.credentials = {email: "", password: ""};
         this.isRequesing = false;
+        this.loginFailed = false;
 
         this.email = new FormControl();
         this.password = new FormControl();
@@ -47,23 +49,25 @@ export class LoginNavbarComponent {
     }
 
     login({value, valid}:{value:Credentials, valid:boolean}) {
-        this.submitted = true;
-        this.isRequesing = true;
-        this.errors = "";
+        if (this.email.dirty && this.password.dirty) {
+            this.submitted = true;
+            this.isRequesing = true;
+            this.errors = "";
 
-        if (valid) {
-            this._userService.login(value.email, value.password).subscribe(
-                result => {
-                    this._router.navigate(["/home"]);
-                    this.isRequesing = false;
-                },
-                error => {
-                    this.errors = error;
-                }
-            )
+            if (valid) {
+                this._userService.login(value.email, value.password).subscribe(
+                    result => {
+                        this._router.navigate(["/home"]);
+                        this.isRequesing = false;
+                    },
+                    error => {
+                        this.loginFailed = true;
+                    }
+                )
+            }
+
+            this.loginForm.reset();
         }
-
-        this.loginForm.reset();
     }
 
     ngOnDestroy() {

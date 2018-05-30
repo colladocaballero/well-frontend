@@ -1,13 +1,11 @@
 export interface User {
     id:string;
     email:string;
-    password:string;
     name:string;
     surname:string;
     birthday:Date;
-    country
+    country:string;
     city:string;
     gender:string;
     profilePicture:string;
-    joinDate:Date;
 }

@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 
 @Component({
-    selector: "home-navbar",
-    templateUrl: "home-navbar.component.html"
+    selector: 'home-navbar',
+    templateUrl: 'home-navbar.component.html'
 })
 
 export class HomeNavbarComponent {

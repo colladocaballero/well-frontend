@@ -19,10 +19,10 @@ export class HomeService {
         this._apiUrl = _configService.getApiUrl();
     }
 
-    getUserDetails():Observable<{message:string}> {
-        let headers = new Headers({"Content-Type":"application/json", "Authorization":`Bearer ${localStorage.getItem("auth_token")}`});
+    getUserDetails():Observable<User> {
+        let headers = new Headers({"Content-Type":"application/json", "Authorization":`Bearer ${localStorage.getItem("authToken")}`});
 
-        return this._httpClient.get(`${this._apiUrl}/home/home/${localStorage.getItem("user_id")}`, {headers})
+        return this._httpClient.get(`${this._apiUrl}/home/home/${localStorage.getItem("userId")}`, {headers})
             .pipe(map(response => response.json()));
     }
 }

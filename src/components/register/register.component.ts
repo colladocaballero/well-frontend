@@ -23,6 +23,7 @@ export class RegisterComponent {
     submitted:boolean;
     isRequesting:boolean;
     errors:string;
+    existingEmail:boolean;
 
     constructor(
         private _userService:UserService,
@@ -45,6 +46,7 @@ export class RegisterComponent {
         });
 
         this.isRequesting = false;
+        this.existingEmail = false;
     }
     
     registerUser({value, valid}:{value:UserRegistration, valid:boolean}) {
@@ -54,10 +56,13 @@ export class RegisterComponent {
 
         if (valid) {
             this._userService.register(value.email, value.password, value.name, value.surname, value.birthday, value.gender).subscribe(
-                result  => {if(result){
-                    
-                }},
-                errors =>  this.errors = errors);
+                result => {
+                    this._router.navigate(["/home"]);
+                },
+                error => {
+                    this.existingEmail = true;
+                }
+            );
         }
     }
 }

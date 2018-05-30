@@ -16,6 +16,6 @@ export class AppComponent {
 		_userService.authNavStatus.subscribe(value => {
 			this._loggedIn = value;
 		});
-		this._loggedIn = !!localStorage.getItem("auth_token");
+		this._loggedIn = !!localStorage.getItem("authToken");
 	}
 }
