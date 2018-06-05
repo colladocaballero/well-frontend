@@ -5,6 +5,7 @@ import { UserRegistration } from '../../models/UserRegistration';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 @Component({
     selector: 'register',
@@ -21,7 +22,8 @@ export class RegisterComponent {
     gender:FormControl;
 
     submitted:boolean;
-    isRequesting:boolean;
+    private _isRequestingSub:Subscription;
+    private _isRequesting:boolean;
     errors:string;
     existingEmail:boolean;
 
@@ -45,18 +47,21 @@ export class RegisterComponent {
             gender: this.gender
         });
 
-        this.isRequesting = false;
+        this._isRequestingSub = _userService.isRequesting.subscribe(
+            result => this._isRequesting = result
+        );
         this.existingEmail = false;
     }
     
     registerUser({value, valid}:{value:UserRegistration, valid:boolean}) {
         this.submitted = true;
-        this.isRequesting = true;
+        this._userService.isRequesting.next(true);
         this.errors = "";
 
         if (valid) {
             this._userService.register(value.email, value.password, value.name, value.surname, value.birthday, value.gender).subscribe(
                 result => {
+                    this._userService.isRequesting.next(false);
                     this._router.navigate(["/home"]);
                 },
                 error => {
@@ -64,5 +69,9 @@ export class RegisterComponent {
                 }
             );
         }
+    }
+
+    ngOnDestroy() {
+        this._isRequestingSub.unsubscribe();
     }
 }

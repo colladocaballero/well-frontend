@@ -53,7 +53,10 @@
                 </div>
                 <div class="row">
                     <div class="form-group col">
-                        <button class="btn btn-success btn-sm" type="button" style="width: 100%" [disabled]="!registerForm.valid" (click)="registerUser(registerForm)">Registrarse</button>
+                        <button class="btn btn-success btn-sm" type="button" style="width: 100%" [disabled]="!registerForm.valid" (click)="registerUser(registerForm)" [disabled]="_isRequesting">
+                            <i class="fa fa-spinner fa-spin" *ngIf="_isRequesting"></i>
+                            <span *ngIf="!_isRequesting">Registrarse</span>
+                        </button>
                     </div>
                 </div>
             </form>

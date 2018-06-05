@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-// import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { HttpClient, HttpHeaders, HttpResponse } from '@angular/common/http';
 
 import { UserRegistration } from '../models/UserRegistration';
@@ -12,8 +11,8 @@ import { HttpResponseModel } from '../models/HttpResponseModel';
 @Injectable()
 export class UserService {
     baseUrl:string;
-    authNavStatusSource;
-    authNavStatus;
+    authNavStatusSource:BehaviorSubject<boolean>;
+    isRequesting:BehaviorSubject<boolean>;
     loggedIn:boolean = false;
 
     constructor(
@@ -22,8 +21,7 @@ export class UserService {
     ) {
         this.baseUrl = _configService.getApiUrl();
         this.authNavStatusSource = new BehaviorSubject<boolean>(false);
-        this.authNavStatusSource.next(this.loggedIn);
-        this.authNavStatus = this.authNavStatusSource.asObservable();
+        this.isRequesting = new BehaviorSubject<boolean>(false);
         this.loggedIn = !!localStorage.getItem("authToken");
     }
 
