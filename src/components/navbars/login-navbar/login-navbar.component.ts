@@ -17,9 +17,10 @@ export class LoginNavbarComponent {
     password:FormControl;
     
     private _subscription:Subscription;
+    private _isRequesingSub:Subscription;
+    private _isRequesting:boolean;
 	brandNew:boolean;
 	errors:string;
-	isRequesing:boolean;
 	submitted:boolean;
     credentials:Credentials;
     loginFailed:boolean;
@@ -31,7 +32,6 @@ export class LoginNavbarComponent {
 	) {
 		this.submitted = false;
         this.credentials = {email: "", password: ""};
-        this.isRequesing = false;
         this.loginFailed = false;
 
         this.email = new FormControl();
@@ -46,19 +46,23 @@ export class LoginNavbarComponent {
             this.brandNew = param["brandNew"];
             this.credentials.email = param["email"];
         });
+
+        this._isRequesingSub = this._userService.isRequesting.subscribe(
+            result => this._isRequesting = result
+        );
     }
 
     login({value, valid}:{value:Credentials, valid:boolean}) {
         if (this.email.dirty && this.password.dirty) {
             this.submitted = true;
-            this.isRequesing = true;
+            this._userService.isRequesting.next(true);
             this.errors = "";
 
             if (valid) {
                 this._userService.login(value.email, value.password).subscribe(
                     result => {
+                        this._userService.isRequesting.next(false);
                         this._router.navigate(["/home"]);
-                        this.isRequesing = false;
                     },
                     error => {
                         this.loginFailed = true;
@@ -72,5 +76,6 @@ export class LoginNavbarComponent {
 
     ngOnDestroy() {
         this._subscription.unsubscribe();
+        this._isRequesingSub.unsubscribe();
     }
 }

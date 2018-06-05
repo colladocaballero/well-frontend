@@ -13,7 +13,7 @@ export class AppComponent {
 	constructor(
 		private _userService:UserService
 	) {
-		_userService.authNavStatus.subscribe(value => {
+		_userService.authNavStatusSource.subscribe(value => {
 			this._loggedIn = value;
 		});
 		this._loggedIn = !!localStorage.getItem("authToken");

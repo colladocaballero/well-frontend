@@ -11,6 +11,9 @@
     <form [formGroup]="loginForm" (ngSubmit)="login(loginForm)" class="form-inline my-2 my-lg-0" novalidate>
         <input type="email" class="form-control form-control-sm mr-sm-2" formControlName="email" placeholder="Email">
         <input type="password" class="form-control form-control-sm mr-sm-2" formControlName="password" placeholder="Contraseña">
-        <button [ngStyle]="{'width': '55px'}" class="btn btn-primary btn-sm my-2 my-sm-0">Entrar</button>
+        <button [ngStyle]="{'width': '55px'}" class="btn btn-primary btn-sm my-2 my-sm-0" [disabled]="_isRequesting">
+            <i class="fa fa-spinner fa-spin" *ngIf="_isRequesting"></i>
+            <span *ngIf="!_isRequesting">Entrar</span>
+        </button>
     </form>
 </nav>

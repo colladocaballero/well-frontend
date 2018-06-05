@@ -20,10 +20,13 @@ export class HomeComponent {
     ) {
         this._imagesUrl = _configService.getImagesUrl();
         this._userDetailsSub = this.getUserDetails();
+        _homeService.getUserDetails();
     }
 
     getUserDetails():Subscription {
-        return this._homeService.getUserDetails().subscribe(userDetails => this._userDetails = userDetails);
+        return this._homeService.userDetails.subscribe(
+            response => this._userDetails = response
+        );
     }
 
     ngOnDestroy() {

@@ -9,6 +9,7 @@ import { LoginNavbarComponent } from '../components/navbars/login-navbar/login-n
 import { HomeNavbarComponent } from '../components/navbars/home-navbar/home-navbar.component';
 import { RegisterComponent } from '../components/register/register.component';
 import { HomeComponent } from '../components/home/home.component';
+import { CommentsComponent } from '../components/comments/comments.component';
 
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user.service';
@@ -26,7 +27,8 @@ import { AuthGuard } from './auth.guard';
 		LoginNavbarComponent,
 		HomeNavbarComponent,
 		RegisterComponent,
-		HomeComponent
+		HomeComponent,
+		CommentsComponent
 	],
 	imports: [
 		BrowserModule,

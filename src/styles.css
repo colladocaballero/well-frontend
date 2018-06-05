@@ -1,3 +1,29 @@
 .icon-margin {
     margin-right: 10px;
 }
+
+.card-comment {
+    max-width: 600px;
+    min-width: 600px;
+    margin-bottom: 20px;
+}
+
+.card-header-comment, .card-footer-comment {
+    padding: 5px !important;
+}
+
+.card-header-comment-title {
+    margin: 0.6rem;
+}
+
+.card-body-textarea {
+    padding: 0 !important;
+}
+
+.textarea-comment {
+    width: 100%;
+    padding: 10px;
+    border: 0;
+    margin: 0 0 -6px 0;
+    outline: none;
+}
