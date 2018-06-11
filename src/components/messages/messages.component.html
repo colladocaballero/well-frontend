@@ -1,0 +1,83 @@
+<div class="container">
+    <div class="d-flex">
+        <h4 class="mr-auto p-2">Mensajes</h4>
+        <div class="p-2">
+            <button class="btn btn-primary btn-sm btn-write-message p-2"><i class="fas fa-pencil-alt icon-with-text"></i>Nuevo mensaje</button>
+        </div>
+    </div>
+
+    <hr>
+    
+    <div class="row messages-div">
+        <div class="col col-sm-3 messages-menu">
+            <div class="list-group" id="list-tab" role="tablist">
+                <a class="list-group-item list-group-item-action active d-flex justify-content-between align-items-center btn-messages"
+                    id="messages" data-toggle="list" href="#messages-list" role="tab" aria-controls="messages">
+                    <strong>Mensajes</strong>
+                    <span class="badge badge-primary badge-pill">{{_unreadCount}}</span>
+                </a>
+                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center btn-invitations"
+                    id="invitations" data-toggle="list" href="#invitations-list" role="tab" aria-controls="invitations">
+                    <strong>Invitaciones</strong>
+                    <span class="badge badge-primary badge-pill">2</span>
+                </a>
+                <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center btn-other"
+                    id="other" data-toggle="list" href="#other-list" role="tab" aria-controls="other">
+                    <strong>Otros</strong>
+                    <span class="badge badge-primary badge-pill">1</span>
+                </a>
+            </div>
+        </div>
+
+        <div class="col col-sm-9 messages-list">
+            <div class="tab-content" *ngIf="!_messagesService.showMessage.getValue()">
+                <div class="tab-pane fade show active" id="messages-list" role="tabpanel" aria-labelledby="messages">
+                    <ul class="list-group" *ngIf="_messages.length > 0">
+                        <li class="list-group-item d-flex justify-content-start align-items-center first-message" [ngClass]="{'unread-message': _messages[0]?.status == 'Unread'}">
+                            <img class="message-profile-picture" src="{{_imagesUrl}}/{{_messages[0].userTransmitter?.profilePicture}}" width="38" height="38">
+                            <div (click)="showMessage(_messages[0])"><span class="message-title">{{_messages[0].userTransmitter?.name}} {{_messages[0].userTransmitter?.surname}}: {{_messages[0]?.title}}</span></div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-start align-items-center middle-messages" *ngFor="let message of _messages | slice:1:_messages.length - 1" [ngClass]="{'unread-message': message?.status == 'Unread'}">
+                            <img class="message-profile-picture" src="{{_imagesUrl}}/{{message.userTransmitter?.profilePicture}}" width="38" height="38">
+                            <div (click)="showMessage(message)"><span class="message-title">{{message.userTransmitter?.name}} {{message.userTransmitter?.surname}}: {{message.title}}</span></div>
+                        </li>
+                        <li class="list-group-item d-flex justify-content-start align-items-center last-message" [ngClass]="{'unread-message': _messages[_messages?.length - 1]?.status == 'Unread'}">
+                            <img class="message-profile-picture" src="{{_imagesUrl}}/{{_messages[_messages?.length - 1].userTransmitter?.profilePicture}}" width="38" height="38">
+                            <div (click)="showMessage(_messages[_messages?.length - 1])"><span class="message-title">{{_messages[_messages?.length - 1].userTransmitter?.name}} {{_messages[_messages?.length - 1].userTransmitter?.surname}}: {{_messages[_messages?.length - 1]?.title}}</span></div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-pane fade" id="invitations-list" role="tabpanel" aria-labelledby="invitations">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-start align-items-center first-message">
+                            Invitación 1
+                        </li>
+                        <li class="list-group-item d-flex justify-content-start align-items-center middle-messages">
+                            Invitación 2
+                        </li>
+                        <li class="list-group-item d-flex justify-content-start align-items-center last-message">
+                            Invitación 3
+                        </li>
+                    </ul>
+                </div>
+                <div class="tab-pane fade" id="other-list" role="tabpanel" aria-labelledby="other">
+                    <ul class="list-group">
+                        <li class="list-group-item d-flex justify-content-start align-items-center first-message">
+                            Otro 1
+                        </li>
+                        <li class="list-group-item d-flex justify-content-start align-items-center middle-messages">
+                            Otro 2
+                        </li>
+                        <li class="list-group-item d-flex justify-content-start align-items-center last-message">
+                            Otro 3
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="tab-content" *ngIf="_messagesService.showMessage.getValue()">
+                <message [_message]="_messageToShow"></message>
+            </div>
+        </div>
+    </div>
+</div>

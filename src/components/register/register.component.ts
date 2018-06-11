@@ -4,8 +4,8 @@ import { ReactiveFormsModule, FormGroup, FormControl, Validators } from '@angula
 import { UserRegistration } from '../../models/UserRegistration';
 import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import { finalize } from 'rxjs/operators';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'register',
@@ -13,65 +13,75 @@ import { Subscription } from 'rxjs';
 })
 
 export class RegisterComponent {
-    registerForm:FormGroup;
-    email:FormControl;
-    password:FormControl;
-    name:FormControl;
-    surname:FormControl;
-    birthday:FormControl;
-    gender:FormControl;
+    private _registerForm:FormGroup;
+    private _email:FormControl;
+    private _password:FormControl;
+    private _name:FormControl;
+    private _surname:FormControl;
+    private _birthday:FormControl;
+    private _gender:FormControl;
 
-    submitted:boolean;
-    private _isRequestingSub:Subscription;
-    private _isRequesting:boolean;
-    errors:string;
-    existingEmail:boolean;
+    private _unsub:Subject<void>;
+    private _isRequestingRegister:boolean;
+    private _existingEmail:boolean;
 
     constructor(
         private _userService:UserService,
         private _router:Router
     ) {
-        this.email = new FormControl("", [Validators.required, Validators.email]);
-        this.password = new FormControl("", [Validators.required, Validators.minLength(8)]);
-        this.name = new FormControl("", Validators.required);
-        this.surname = new FormControl("", Validators.required);
-        this.birthday = new FormControl("", Validators.required);
-        this.gender = new FormControl("", Validators.required);
+        this._unsub = new Subject();
+        this._existingEmail = false;
+    }
 
-        this.registerForm = new FormGroup({
-            email: this.email,
-            password: this.password,
-            name: this.name,
-            surname: this.surname,
-            birthday: this.birthday,
-            gender: this.gender
+    ngOnInit() {
+        this._userService.isRequestingRegister
+            .pipe(takeUntil(this._unsub))
+            .subscribe(
+                result => this._isRequestingRegister = result
+            );
+
+        this.createForm();
+    }
+
+    createForm():void {
+        this._email = new FormControl("", [Validators.required, Validators.email]);
+        this._password = new FormControl("", [Validators.required, Validators.minLength(8)]);
+        this._name = new FormControl("", Validators.required);
+        this._surname = new FormControl("", Validators.required);
+        this._birthday = new FormControl("", Validators.required);
+        this._gender = new FormControl("", Validators.required);
+
+        this._registerForm = new FormGroup({
+            email: this._email,
+            password: this._password,
+            name: this._name,
+            surname: this._surname,
+            birthday: this._birthday,
+            gender: this._gender
         });
-
-        this._isRequestingSub = _userService.isRequesting.subscribe(
-            result => this._isRequesting = result
-        );
-        this.existingEmail = false;
     }
     
     registerUser({value, valid}:{value:UserRegistration, valid:boolean}) {
-        this.submitted = true;
-        this._userService.isRequesting.next(true);
-        this.errors = "";
+        this._userService.isRequestingRegister.next(true);
 
         if (valid) {
-            this._userService.register(value.email, value.password, value.name, value.surname, value.birthday, value.gender).subscribe(
-                result => {
-                    this._userService.isRequesting.next(false);
-                    this._router.navigate(["/home"]);
-                },
-                error => {
-                    this.existingEmail = true;
-                }
-            );
+            this._userService.register(value.email, value.password, value.name, value.surname, value.birthday, value.gender)
+                .pipe(takeUntil(this._unsub))
+                .subscribe(
+                    result => {
+                        this._userService.isRequestingRegister.next(false);
+                        this._router.navigate(["/home"]);
+                    },
+                    error => {
+                        this._userService.isRequestingRegister.next(false);
+                        this._existingEmail = true;
+                    }
+                );
         }
     }
 
     ngOnDestroy() {
-        this._isRequestingSub.unsubscribe();
+        this._unsub.next();
+        this._unsub.complete();
     }
 }

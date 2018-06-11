@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { ConfigService } from '../../services/config.service';
-import { CommentsService } from '../../services/comments.service';
-import { Subscription } from 'rxjs';
-import { User } from '../../models/User';
-import { HomeService } from '../../services/home.service';
+import { ConfigService } from '../../../services/config.service';
+import { CommentsService } from '../../../services/comments.service';
+import { User } from '../../../models/User';
+import { HomeService } from '../../../services/home.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'comments',
@@ -14,9 +15,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 export class CommentsComponent {
     private _imagesUrl:string;
     private _comments:Comment[];
-    private _commentsSub:Subscription;
     private _userDetails:User;
-    private _userDetailsSub:Subscription;
+    private _unsub:Subject<void>;
     private _commentForm:FormGroup;
     private _commentText:FormControl;
 
@@ -24,12 +24,14 @@ export class CommentsComponent {
         private _commentsService:CommentsService,
         private _configService:ConfigService,
         private _homeService:HomeService
-    ) {}
+    ) {
+        this._unsub = new Subject();
+    }
     
     ngOnInit() {
         this._imagesUrl = this._configService.getImagesUrl();
-        this._commentsSub = this.getWallComments();
-        this._userDetailsSub = this.getUserDetails();
+        this.getWallComments();
+        this.getUserDetails();
         this.createForm();
     }
 
@@ -40,30 +42,35 @@ export class CommentsComponent {
         })
     }
 
-    getWallComments():Subscription {
+    getWallComments():void {
         this._commentsService.getWallComments(localStorage.getItem("userId"));
-        return this._commentsService.comments.subscribe(
-            result => {
-                this._comments = result;
-            }
-        );
+        this._commentsService.comments
+            .pipe(takeUntil(this._unsub))
+            .subscribe(
+                result => {
+                    this._comments = result;
+                }
+            );
     }
 
-    getUserDetails():Subscription {
-        return this._homeService.userDetails.subscribe(
-            response => this._userDetails = response
-        );
+    getUserDetails():void {
+        this._homeService.userDetails
+            .pipe(takeUntil(this._unsub))
+            .subscribe(
+                response => this._userDetails = response
+            );
     }
 
     addNewComment() {
         if (this._commentText.value.length > 0) {
-            this._commentsService.addNewComment(this._userDetails.id, this._commentText.value, this.getDate()).subscribe(
-                response => {
-                    this._commentsService.isSending.next(false);
-                    this._commentsService.getWallComments(this._userDetails.id);
-                    this._commentText.reset();
-                }
-            );
+            this._commentsService.addNewComment(this._userDetails.id, this._commentText.value, this.getDate())
+                .subscribe(
+                    response => {
+                        this._commentsService.isSending.next(false);
+                        this._commentsService.getWallComments(this._userDetails.id);
+                        this._commentText.reset();
+                    }
+                );
         }
     }
 
@@ -80,7 +87,7 @@ export class CommentsComponent {
     }
 
     ngOnDestroy() {
-        this._commentsSub.unsubscribe();
-        this._userDetailsSub.unsubscribe();
+        this._unsub.next();
+        this._unsub.complete();
     }
 }

@@ -27,3 +27,13 @@
     margin: 0 0 -6px 0;
     outline: none;
 }
+
+.icon-with-text {
+    margin-right: 5px;
+}
+
+.btn-icon-only {
+    width: 31px;
+    height: 31px;
+    padding: 4px !important;
+}

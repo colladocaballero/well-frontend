@@ -1,0 +1,29 @@
+<div class="container-fluid" [ngStyle]="{'margin-top': '15px'}" *ngIf="_message">
+    <div class="d-flex justify-content-start">
+        <button class="btn btn-primary btn-sm back-button" (click)="goBack()"><i class="fas fa-chevron-left icon-with-text"></i> Volver</button>
+        <img class="message-img" src="{{_imagesUrl}}/{{_message.userTransmitter?.profilePicture}}" width="31" height="31">
+        <h4 class="message-title">{{_message.userTransmitter?.name}} {{_message.userTransmitter?.surname}}: {{_message?.title}}</h4>
+    </div>
+
+    <hr>
+
+    <textarea class="form-control form-control-sm" rows="6" readonly>{{_message?.text}}</textarea>
+
+    <div class="d-flex justify-content-between buttons-div">
+        <div>
+            <span class="text-muted">{{_message?.date.substring(0, 10)}} {{_message?.date.substring(11, 19)}}</span>
+        </div>
+        <div>
+            <div *ngIf="!_messagesService.isDeleting.getValue()">
+                <button class="btn btn-danger btn-sm" (click)="deleteMessage()"><i class="fas fa-trash-alt icon-with-text"></i>Eliminar</button>
+                <button class="btn btn-secondary btn-sm" [ngStyle]="{'margin-left': '5px'}" (click)="markAsUnread()"><i class="fas fa-book icon-with-text"></i>Marcar como no leído</button>
+                <button class="btn btn-primary btn-sm" [ngStyle]="{'margin-left': '5px'}"><i class="fas fa-reply icon-with-text"></i>Responder</button>
+            </div>
+            <div class="alert alert-danger alert-sm" role="alert" *ngIf="_messagesService.isDeleting.getValue()">
+                <span>¿Borrar mensaje?</span>
+                <button class="btn btn-secondary btn-sm btn-icon-only" (click)="cancelDeleteMessage()" [ngStyle]="{'margin-left': '15px'}"><i class="fas fa-times"></i></button>
+                <button class="btn btn-danger btn-sm btn-icon-only" (click)="confirmDeleteMessage()" [ngStyle]="{'margin-left': '5px'}"><i class="fas fa-check"></i></button>
+            </div>
+        </div>
+    </div>
+</div>

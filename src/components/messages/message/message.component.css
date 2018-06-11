@@ -1,0 +1,20 @@
+.back-button {
+    height: 31px;
+}
+
+.message-title {
+    margin-left: 10px;
+}
+
+.message-img {
+    margin-left: 10px;
+    border-radius: .25rem;
+}
+
+.buttons-div {
+    margin-top: 10px;
+}
+
+.alert-sm {
+    padding: 4px 4px 4px 10px;
+}
