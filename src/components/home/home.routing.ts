@@ -6,7 +6,7 @@ import { HomeComponent } from './home.component';
 
 export const appRouting:ModuleWithProviders = RouterModule.forChild([
     {
-        path: "home",
+        path: '',
         component: HomeComponent, canActivate: [AuthGuard]
     }
 ]);

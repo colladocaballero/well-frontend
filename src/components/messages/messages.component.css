@@ -1,0 +1,80 @@
+.btn-write-message {
+    padding: 4px 8px !important;
+}
+
+.messages-div {
+    border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+    height: 633px;
+}
+
+.messages-menu {
+    padding-right: 0;
+    padding-left: 0;
+    border-right: 1px solid rgba(0,0,0,.125);
+}
+
+.btn-messages {
+    border: 0;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    border-radius: 0;
+    border-top-left-radius: .25rem;
+}
+
+.btn-invitations {
+    border: 0;
+    border-top: 1px solid rgba(0,0,0,.125);
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    border-radius: 0;
+}
+
+.btn-other {
+    border: 0;
+    border-top: 1px solid rgba(0,0,0,.125);
+    border-radius: 0;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+}
+
+.messages-list {
+    padding-right: 0;
+    padding-left: 0;
+    overflow: auto;
+    overflow-x: hidden;
+}
+
+.message-profile-picture {
+    border-radius: .25rem;
+    margin-right: 5px;
+}
+
+.message-title {
+    cursor: pointer;
+}
+
+.first-message {
+    border: 0;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    padding: 5px;
+}
+
+.middle-messages {
+    margin-top: 1px;
+    border: 0;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    padding: 5px;
+    
+}
+
+.last-message {
+    margin-top: 1px;
+    border: 0;
+    border-radius: 0;
+    border-bottom: 1px solid rgba(0,0,0,.125);
+    border-bottom-right-radius: .25rem;
+    padding: 5px;
+    
+}
+
+.unread-message {
+    font-weight: bold;
+}

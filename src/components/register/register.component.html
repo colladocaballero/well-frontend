@@ -7,44 +7,44 @@
             </div>
         </div>
         <div class="col-sm">
-            <form [formGroup]="registerForm" novalidate>
+            <form [formGroup]="_registerForm" novalidate>
                 <div class="row">
                     <div class="form-group col">
                         <label for="txtName">Nombre</label>
-                        <input type="text" id="txtName" formControlName="name" class="form-control form-control-sm" [ngClass]="{'is-invalid':name.invalid && name.touched}">
+                        <input type="text" id="txtName" formControlName="name" class="form-control form-control-sm" [ngClass]="{'is-invalid':_name.invalid && _name.touched}">
                         <div class="invalid-feedback">Campo requerido</div>
                     </div>
                     <div class="form-group col">
                         <label for="txtSurname">Apellidos</label>
-                        <input type="text" id="txtSurname" formControlName="surname" class="form-control form-control-sm" [ngClass]="{'is-invalid':surname.invalid && surname.touched}">
+                        <input type="text" id="txtSurname" formControlName="surname" class="form-control form-control-sm" [ngClass]="{'is-invalid':_surname.invalid && _surname.touched}">
                         <div class="invalid-feedback">Campo requerido</div>
                     </div>
                 </div>
                 <div>
                     <div class="form-group">
                         <label for="txtEmail">Email</label>
-                        <input type="email" id="txtEmail" formControlName="email" class="form-control form-control-sm" [ngClass]="{'is-invalid':email.invalid && email.touched}">
+                        <input type="email" id="txtEmail" formControlName="email" class="form-control form-control-sm" [ngClass]="{'is-invalid':_email.invalid && _email.touched}">
                         <div class="invalid-feedback">Campo requerido</div>
-                        <div class="alert alert-danger" [ngStyle]="{'height': '31px', 'padding': '2px 10px 5px 10px', 'margin-top': '5px'}" *ngIf="existingEmail">
+                        <div class="alert alert-danger" [ngStyle]="{'height': '31px', 'padding': '2px 10px 5px 10px', 'margin-top': '5px'}" *ngIf="_existingEmail">
                             <span><i class="fas fa-exclamation-circle icon-margin"></i>Correo en uso</span>
                         </div>
                         
                     </div>
                     <div class="form-group">
                         <label for="txtPassword">Contraseña</label>
-                        <input type="password" id="txtPassword" formControlName="password" class="form-control form-control-sm" [ngClass]="{'is-invalid':password.invalid && password.touched}">
+                        <input type="password" id="txtPassword" formControlName="password" class="form-control form-control-sm" [ngClass]="{'is-invalid':_password.invalid && _password.touched}">
                         <div class="invalid-feedback">Campo requerido</div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group col">
                         <label for="txtBirthday">Fecha de nacimiento</label>
-                        <input type="date" formControlName="birthday" id="txtBirthday" class="form-control form-control-sm" placeholder="dd/mm/aaaa" [ngClass]="{'is-invalid':birthday.invalid && birthday.touched}">
+                        <input type="date" formControlName="birthday" id="txtBirthday" class="form-control form-control-sm" placeholder="dd/mm/aaaa" [ngClass]="{'is-invalid':_birthday.invalid && _birthday.touched}">
                         <div class="invalid-feedback">Campo requerido</div>
                     </div>
                     <div class="form-group col">
                         <label for="selectGender">Género</label>
-                        <select name="selectGender" formControlName="gender" id="selectGender" class="form-control form-control-sm" [ngClass]="{'is-invalid':gender.invalid && gender.touched}">
+                        <select name="selectGender" formControlName="gender" id="selectGender" class="form-control form-control-sm" [ngClass]="{'is-invalid':_gender.invalid && _gender.touched}">
                             <option value="" disabled hidden>Género</option>
                             <option *ngFor="let gender of ['Femenino', 'Masculino']" [value]="gender">{{gender}}</option>
                         </select>
@@ -53,9 +53,9 @@
                 </div>
                 <div class="row">
                     <div class="form-group col">
-                        <button class="btn btn-success btn-sm" type="button" style="width: 100%" [disabled]="!registerForm.valid" (click)="registerUser(registerForm)" [disabled]="_isRequesting">
-                            <i class="fa fa-spinner fa-spin" *ngIf="_isRequesting"></i>
-                            <span *ngIf="!_isRequesting">Registrarse</span>
+                        <button class="btn btn-success btn-sm" type="button" style="width: 100%" [disabled]="!_registerForm.valid" (click)="registerUser(registerForm)" [disabled]="_isRequestingRegister || _userService.isRequestingLogin.getValue()">
+                            <i class="fa fa-spinner fa-spin" *ngIf="_isRequestingRegister"></i>
+                            <span *ngIf="!_isRequestingRegister">Registrarse</span>
                         </button>
                     </div>
                 </div>

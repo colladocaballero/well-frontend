@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
-import { Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { Credentials } from '../../../models/Credentials';
 import { UserService } from '../../../services/user.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
     selector: 'login-navbar',
@@ -12,70 +13,63 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 
 export class LoginNavbarComponent {
-    loginForm:FormGroup;
-    email:FormControl;
-    password:FormControl;
+    private _loginForm:FormGroup;
+    private _email:FormControl;
+    private _password:FormControl;
     
-    private _subscription:Subscription;
-    private _isRequesingSub:Subscription;
-    private _isRequesting:boolean;
-	brandNew:boolean;
-	errors:string;
-	submitted:boolean;
-    credentials:Credentials;
-    loginFailed:boolean;
+    private _unsub:Subject<void>;
+    private _isRequestingLogin:boolean;
+    private _credentials:Credentials;
+    private _loginFailed:boolean;
 
 	constructor(
 		private _userService:UserService,
 		private _router:Router,
 		private _activatedRoute:ActivatedRoute
 	) {
-		this.submitted = false;
-        this.credentials = {email: "", password: ""};
-        this.loginFailed = false;
+        this._credentials = {email: "", password: ""};
+        this._loginFailed = false;
+        this._unsub = new Subject();
 
-        this.email = new FormControl();
-        this.password = new FormControl();
-        this.loginForm = new FormGroup({
-            email: this.email,
-            password: this.password
+        this._email = new FormControl();
+        this._password = new FormControl();
+        this._loginForm = new FormGroup({
+            email: this._email,
+            password: this._password
         });
-	}
+    }
+    
     ngOnInit() {
-        this._subscription = this._activatedRoute.queryParams.subscribe((param:any) => {
-            this.brandNew = param["brandNew"];
-            this.credentials.email = param["email"];
-        });
-
-        this._isRequesingSub = this._userService.isRequesting.subscribe(
-            result => this._isRequesting = result
+        this._userService.isRequestingLogin.subscribe(
+            result => this._isRequestingLogin = result
         );
     }
 
     login({value, valid}:{value:Credentials, valid:boolean}) {
-        if (this.email.dirty && this.password.dirty) {
-            this.submitted = true;
-            this._userService.isRequesting.next(true);
-            this.errors = "";
+        if (this._email.dirty && this._password.dirty) {
+            this._userService.isRequestingLogin.next(true);
 
             if (valid) {
-                this._userService.login(value.email, value.password).subscribe(
-                    result => {
-                        this._userService.isRequesting.next(false);
-                        this._router.navigate(["/home"]);
-                    },
-                    error => {
-                        this.loginFailed = true;
-                    }
-                )
+                this._userService.login(value.email, value.password)
+                .pipe(takeUntil(this._unsub))
+                    .subscribe(
+                        result => {
+                            this._userService.isRequestingLogin.next(false);
+                            this._router.navigate(["/home"]);
+                        },
+                        error => {
+                            this._userService.isRequestingLogin.next(false);
+                            this._loginFailed = true;
+                        }
+                    );
             }
 
-            this.loginForm.reset();
+            this._loginForm.reset();
         }
     }
 
     ngOnDestroy() {
-        this._subscription.unsubscribe();
-        this._isRequesingSub.unsubscribe();
+        this._unsub.next();
+        this._unsub.complete();
     }
 }

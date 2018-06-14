@@ -4,16 +4,16 @@
         <li class="nav-item">Home</li>
     </ul>
     
-    <div class="alert alert-danger" [ngStyle]="{'height': '31px', 'padding': '2px 10px 5px 10px', 'margin': '5px 8px'}" *ngIf="loginFailed">
+    <div class="alert alert-danger" [ngStyle]="{'height': '31px', 'padding': '2px 10px 5px 10px', 'margin': '5px 8px'}" *ngIf="_loginFailed">
         <span><i class="fas fa-exclamation-circle icon-margin"></i>Email o contraseña incorrectos</span>
     </div>
 
-    <form [formGroup]="loginForm" (ngSubmit)="login(loginForm)" class="form-inline my-2 my-lg-0" novalidate>
+    <form [formGroup]="_loginForm" (ngSubmit)="login(_loginForm)" class="form-inline my-2 my-lg-0" novalidate>
         <input type="email" class="form-control form-control-sm mr-sm-2" formControlName="email" placeholder="Email">
         <input type="password" class="form-control form-control-sm mr-sm-2" formControlName="password" placeholder="Contraseña">
-        <button [ngStyle]="{'width': '55px'}" class="btn btn-primary btn-sm my-2 my-sm-0" [disabled]="_isRequesting">
-            <i class="fa fa-spinner fa-spin" *ngIf="_isRequesting"></i>
-            <span *ngIf="!_isRequesting">Entrar</span>
+        <button [ngStyle]="{'width': '55px'}" class="btn btn-primary btn-sm my-2 my-sm-0" [disabled]="_isRequestingLogin || _userService.isRequestingRegister.getValue()">
+            <i class="fa fa-spinner fa-spin" *ngIf="_isRequestingLogin"></i>
+            <span *ngIf="!_isRequestingLogin">Entrar</span>
         </button>
     </form>
 </nav>

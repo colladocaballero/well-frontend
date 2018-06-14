@@ -4,29 +4,39 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { User } from '../models/User';
 import { ConfigService } from '../services/config.service';
 
-import { Observable, BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 import { HttpResponseModel } from '../models/HttpResponseModel';
 
 @Injectable()
 export class HomeService {
     private _apiUrl:string;
-    public userDetails:BehaviorSubject<User>;
+    public userDetailsSubject:BehaviorSubject<User>;
+    public userFriendsSubject:BehaviorSubject<User[]>;
 
     constructor(
         private _httpClient:HttpClient,
         private _configService:ConfigService
     ) {
         this._apiUrl = _configService.getApiUrl();
-        this.userDetails = new BehaviorSubject<User>(null);
+        this.userDetailsSubject = new BehaviorSubject<User>(null);
+        this.userFriendsSubject = new BehaviorSubject<User[]>(null);
     }
 
     getUserDetails():void {
         let httpHeaders:HttpHeaders = new HttpHeaders({"Content-Type":"application/json", "Authorization":`Bearer ${localStorage.getItem("authToken")}`});
 
-        this._httpClient.get(`${this._apiUrl}/home/home/${localStorage.getItem("userId")}`, {headers: httpHeaders})
+        this._httpClient.get(`${this._apiUrl}/home/${localStorage.getItem("userId")}`, {headers: httpHeaders})
             .subscribe(
-                (response:HttpResponseModel) => this.userDetails.next(response.data)
+                (response:HttpResponseModel) => this.userDetailsSubject.next(response.data)
+            );
+    }
+
+    getFriends():void {
+        let httpHeaders:HttpHeaders = new HttpHeaders({"Content-Type":"application/json", "Authorization":`Bearer ${localStorage.getItem("authToken")}`});
+
+        this._httpClient.get(`${this._apiUrl}/home/${localStorage.getItem("userId")}/getfriends`, {headers: httpHeaders})
+            .subscribe(
+                (response:HttpResponseModel) => this.userFriendsSubject.next(response.data)
             );
     }
 }

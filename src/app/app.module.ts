@@ -1,23 +1,24 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
 import { HttpClientModule } from '@angular/common/http';
+import fontawesome from '@fortawesome/fontawesome';
+import solid from '@fortawesome/fontawesome-free-solid';
+fontawesome.library.add(solid);
+import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { LoginNavbarComponent } from '../components/navbars/login-navbar/login-navbar.component';
 import { HomeNavbarComponent } from '../components/navbars/home-navbar/home-navbar.component';
 import { RegisterComponent } from '../components/register/register.component';
-import { HomeComponent } from '../components/home/home.component';
-import { CommentsComponent } from '../components/comments/comments.component';
+import { NewMessageComponent } from '../components/messages/new-message/new-message.component';
 
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user.service';
-
-import { HomeModule } from '../components/home/home.module';
+import { HomeService } from '../services/home.service';
+import { MessagesService } from '../services/messages.service';
 
 import { routing, appRoutingProviders } from './app.routing';
-import { appRouting } from '../components/home/home.routing';
 
 import { AuthGuard } from './auth.guard';
 
@@ -27,25 +28,27 @@ import { AuthGuard } from './auth.guard';
 		LoginNavbarComponent,
 		HomeNavbarComponent,
 		RegisterComponent,
-		HomeComponent,
-		CommentsComponent
+		NewMessageComponent
 	],
 	imports: [
 		BrowserModule,
 		routing,
 		FormsModule,
 		ReactiveFormsModule,
-		HttpModule,
 		HttpClientModule,
-		HomeModule,
-		appRouting
+		NgbModule.forRoot()
 	],
 	providers: [
 		appRoutingProviders,
 		ConfigService,
 		UserService,
-		AuthGuard
+		HomeService,
+		MessagesService,
+		AuthGuard,
+		NgbModal,
+		NgbActiveModal
 	],
-	bootstrap: [AppComponent]
+	bootstrap: [AppComponent],
+    entryComponents: [NewMessageComponent]
 })
 export class AppModule { }

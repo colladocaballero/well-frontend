@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 import { HomeService } from '../../services/home.service';
 import { User } from '../../models/User';
 import { ConfigService } from '../../services/config.service';
-import { Subscription } from 'rxjs';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
     selector: 'home',
@@ -11,25 +12,29 @@ import { Subscription } from 'rxjs';
 
 export class HomeComponent {
     private _userDetails:User;
-    private _userDetailsSub:Subscription;
     private _imagesUrl:string;
+    private _unsub:Subject<void>;
     
     constructor(
         private _homeService:HomeService,
         private _configService:ConfigService
     ) {
         this._imagesUrl = _configService.getImagesUrl();
-        this._userDetailsSub = this.getUserDetails();
+        this._unsub = new Subject();
+        this.getUserDetails();
         _homeService.getUserDetails();
     }
 
-    getUserDetails():Subscription {
-        return this._homeService.userDetails.subscribe(
-            response => this._userDetails = response
-        );
+    getUserDetails():void {
+        this._homeService.userDetailsSubject
+            .pipe(takeUntil(this._unsub))
+            .subscribe(
+                response => this._userDetails = response
+            );
     }
 
     ngOnDestroy() {
-        this._userDetailsSub.unsubscribe();
+        this._unsub.next();
+        this._unsub.complete();
     }
 }
