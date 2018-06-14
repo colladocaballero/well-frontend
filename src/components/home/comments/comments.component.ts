@@ -17,6 +17,7 @@ export class CommentsComponent {
     private _comments:Comment[];
     private _userDetails:User;
     private _unsub:Subject<void>;
+    private _isSending:boolean;
     private _commentForm:FormGroup;
     private _commentText:FormControl;
 
@@ -33,10 +34,11 @@ export class CommentsComponent {
         this.getWallComments();
         this.getUserDetails();
         this.createForm();
+        this.getSendingStatus();
     }
 
     createForm():void {
-        this._commentText = new FormControl();
+        this._commentText = new FormControl("");
         this._commentForm = new FormGroup({
             commentText: this._commentText
         })
@@ -54,16 +56,25 @@ export class CommentsComponent {
     }
 
     getUserDetails():void {
-        this._homeService.userDetails
+        this._homeService.userDetailsSubject
             .pipe(takeUntil(this._unsub))
             .subscribe(
                 response => this._userDetails = response
             );
     }
 
+    getSendingStatus():void {
+        this._commentsService.isSending
+            .pipe(takeUntil(this._unsub))
+            .subscribe(
+                response => this._isSending = response
+            );
+    }
+
     addNewComment() {
         if (this._commentText.value.length > 0) {
-            this._commentsService.addNewComment(this._userDetails.id, this._commentText.value, this.getDate())
+        
+        this._commentsService.addNewComment(this._userDetails.id, this._commentText.value, this.getDate())
                 .subscribe(
                     response => {
                         this._commentsService.isSending.next(false);

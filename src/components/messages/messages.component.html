@@ -2,7 +2,7 @@
     <div class="d-flex">
         <h4 class="mr-auto p-2">Mensajes</h4>
         <div class="p-2">
-            <button class="btn btn-primary btn-sm btn-write-message p-2"><i class="fas fa-pencil-alt icon-with-text"></i>Nuevo mensaje</button>
+            <button class="btn btn-primary btn-sm btn-write-message p-2" (click)="newMessage()"><i class="fas fa-pencil-alt icon-with-text"></i>Nuevo mensaje</button>
         </div>
     </div>
 
@@ -33,17 +33,9 @@
             <div class="tab-content" *ngIf="!_messagesService.showMessage.getValue()">
                 <div class="tab-pane fade show active" id="messages-list" role="tabpanel" aria-labelledby="messages">
                     <ul class="list-group" *ngIf="_messages.length > 0">
-                        <li class="list-group-item d-flex justify-content-start align-items-center first-message" [ngClass]="{'unread-message': _messages[0]?.status == 'Unread'}">
-                            <img class="message-profile-picture" src="{{_imagesUrl}}/{{_messages[0].userTransmitter?.profilePicture}}" width="38" height="38">
-                            <div (click)="showMessage(_messages[0])"><span class="message-title">{{_messages[0].userTransmitter?.name}} {{_messages[0].userTransmitter?.surname}}: {{_messages[0]?.title}}</span></div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-start align-items-center middle-messages" *ngFor="let message of _messages | slice:1:_messages.length - 1" [ngClass]="{'unread-message': message?.status == 'Unread'}">
+                        <li class="list-group-item d-flex justify-content-start align-items-center middle-messages" *ngFor="let message of _messages; let i = index;" [ngClass]="{'unread-message': message?.status == 'Unread', 'first-message': i == 0, 'middle-messages': i != 0 && i != _messages.length - 1, 'last-message': i == _messages.length - 1}">
                             <img class="message-profile-picture" src="{{_imagesUrl}}/{{message.userTransmitter?.profilePicture}}" width="38" height="38">
                             <div (click)="showMessage(message)"><span class="message-title">{{message.userTransmitter?.name}} {{message.userTransmitter?.surname}}: {{message.title}}</span></div>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-start align-items-center last-message" [ngClass]="{'unread-message': _messages[_messages?.length - 1]?.status == 'Unread'}">
-                            <img class="message-profile-picture" src="{{_imagesUrl}}/{{_messages[_messages?.length - 1].userTransmitter?.profilePicture}}" width="38" height="38">
-                            <div (click)="showMessage(_messages[_messages?.length - 1])"><span class="message-title">{{_messages[_messages?.length - 1].userTransmitter?.name}} {{_messages[_messages?.length - 1].userTransmitter?.surname}}: {{_messages[_messages?.length - 1]?.title}}</span></div>
                         </li>
                     </ul>
                 </div>

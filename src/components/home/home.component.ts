@@ -26,7 +26,7 @@ export class HomeComponent {
     }
 
     getUserDetails():void {
-        this._homeService.userDetails
+        this._homeService.userDetailsSubject
             .pipe(takeUntil(this._unsub))
             .subscribe(
                 response => this._userDetails = response

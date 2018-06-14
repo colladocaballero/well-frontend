@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { MessagesComponent } from './messages.component';
-import { MessagesService } from '../../services/messages.service';
 import { MessageComponent } from './message/message.component';
 
 import { messagesRouting } from './messages.routing';
@@ -18,7 +17,6 @@ import { messagesRouting } from './messages.routing';
         MessageComponent
     ],
     providers: [
-        MessagesService
         // AuthGuard
     ]
 })

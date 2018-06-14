@@ -4,6 +4,8 @@ import { Message } from '../../models/Message';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../services/config.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NewMessageComponent } from './new-message/new-message.component';
 
 @Component({
     selector: 'messages',
@@ -20,7 +22,8 @@ export class MessagesComponent {
 
     constructor(
         private _messagesService:MessagesService,
-        private _configService:ConfigService
+        private _configService:ConfigService,
+        private _modalService:NgbModal
     ) {
         this._messages = [];
         this._unsub = new Subject();
@@ -61,6 +64,10 @@ export class MessagesComponent {
             .subscribe(
                 response => this._messagesService.getUserMessages(localStorage.getItem("userId"))
             );
+    }
+
+    newMessage():void {
+        const modalRef = this._modalService.open(NewMessageComponent);
     }
 
     ngOnDestroy() {

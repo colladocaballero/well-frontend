@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
 
 import { HomeComponent } from './home.component';
-import { HomeService } from '../../services/home.service';
 import { CommentsComponent } from './comments/comments.component';
 import { CommentsService } from '../../services/comments.service';
 
@@ -23,7 +22,6 @@ import { AuthGuard } from './auth.guard';
     ],
     providers: [
         AuthGuard,
-        HomeService,
         CommentsService
     ]
 })

@@ -5,14 +5,18 @@ import { HttpClientModule } from '@angular/common/http';
 import fontawesome from '@fortawesome/fontawesome';
 import solid from '@fortawesome/fontawesome-free-solid';
 fontawesome.library.add(solid);
+import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
 import { LoginNavbarComponent } from '../components/navbars/login-navbar/login-navbar.component';
 import { HomeNavbarComponent } from '../components/navbars/home-navbar/home-navbar.component';
 import { RegisterComponent } from '../components/register/register.component';
+import { NewMessageComponent } from '../components/messages/new-message/new-message.component';
 
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user.service';
+import { HomeService } from '../services/home.service';
+import { MessagesService } from '../services/messages.service';
 
 import { routing, appRoutingProviders } from './app.routing';
 
@@ -23,7 +27,8 @@ import { AuthGuard } from './auth.guard';
 		AppComponent,
 		LoginNavbarComponent,
 		HomeNavbarComponent,
-		RegisterComponent
+		RegisterComponent,
+		NewMessageComponent
 	],
 	imports: [
 		BrowserModule,
@@ -31,13 +36,19 @@ import { AuthGuard } from './auth.guard';
 		FormsModule,
 		ReactiveFormsModule,
 		HttpClientModule,
+		NgbModule.forRoot()
 	],
 	providers: [
 		appRoutingProviders,
 		ConfigService,
 		UserService,
-		AuthGuard
+		HomeService,
+		MessagesService,
+		AuthGuard,
+		NgbModal,
+		NgbActiveModal
 	],
-	bootstrap: [AppComponent]
+	bootstrap: [AppComponent],
+    entryComponents: [NewMessageComponent]
 })
 export class AppModule { }

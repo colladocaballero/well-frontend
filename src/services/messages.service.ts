@@ -36,6 +36,18 @@ export class MessagesService {
             );
     }
 
+    sendMessage(title:string, text:string, userTransmitterId:string, receiversIds:string[]):Observable<HttpResponseModel> {
+        let httpHeaders:HttpHeaders = new HttpHeaders({"Content-Type": "application/json"});
+        let body = {
+            Title: title,
+            Text: text,
+            UserTransmitterId: userTransmitterId,
+            ReceiversIds: receiversIds
+        };
+        return this._httpClient.post(`${this._apiUrl}/messages`, body, {headers: httpHeaders})
+            .pipe(map(response => response as HttpResponseModel));
+    }
+
     markAsRead(messageId:number):Observable<HttpResponseModel> {
         let httpHeaders:HttpHeaders = new HttpHeaders({"Content-Type": "application/json"});
         return this._httpClient.put(`${this._apiUrl}/Messages/${messageId}/MarkAsRead`, {}, {headers: httpHeaders})
