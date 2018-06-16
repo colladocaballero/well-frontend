@@ -1,0 +1,19 @@
+.card {
+    overflow: hidden;
+    width: 300px;
+    height: 100px;
+    min-width: 300px;
+    margin: 5px;
+}
+
+.card-body {
+    padding: 10px;
+}
+
+.image {
+    height: 100px;
+}
+
+.image-container {
+    width: 100px;
+}

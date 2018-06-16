@@ -1,10 +1,10 @@
 <div class="container-fluid d-flex" *ngIf="_userDetails">
     <div class="col-sm-2" [ngStyle]="{'width': '200px'}">
-        <img class="rounded" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}" width="200" height="200">
+        <img class="rounded" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}" [ngStyle]="{'height': '200px'}">
         <h4 [ngStyle]="{'margin-top': '10px'}">{{_userDetails?.name}} {{_userDetails?.surname}}</h4>
     </div>
 
-    <div class="col-sm-10">
+    <div class="col-sm-8">
         <comments></comments>
     </div>
 </div>

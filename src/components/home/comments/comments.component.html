@@ -1,30 +1,32 @@
-<div class="container-fluid" *ngIf="_userDetails && _comments">
-    <div class="card text card-comment" [formGroup]="_commentForm">
-        <div class="card-header card-header-comment d-flex">
-            <img class="rounded" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}" alt="" width="40" height="40px">
-            <h6 class="card-header-comment-title">{{_userDetails?.name}} {{_userDetails?.surname}}</h6>
+<div class="container-fluid d-flex justify-content-center" *ngIf="_userDetails && _comments" [ngStyle]="{'width': '600px'}">
+    <div class="row">
+        <div class="card text card-comment" [formGroup]="_commentForm">
+            <div class="card-header card-header-comment d-flex">
+                <img class="rounded" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}" alt="" width="40" height="40px">
+                <h6 class="card-header-comment-title">{{_userDetails?.name}} {{_userDetails?.surname}}</h6>
+            </div>
+            <div class="card-body card-body-textarea">
+                <textarea class="textarea-comment" formControlName="commentText" rows="4"></textarea>
+            </div>
+            <div class="card-footer card-footer-comment d-flex justify-content-end">
+                <button class="btn btn-primary btn-sm" (click)="addNewComment()" [ngStyle]="{'width': '67px'}" [disabled]="_isSending">
+                    <span *ngIf="_isSending"><i class="fa fa-spinner fa-spin"></i></span>
+                    <span *ngIf="!_isSending">Publicar</span>
+                </button>
+            </div>
         </div>
-        <div class="card-body card-body-textarea">
-            <textarea class="textarea-comment" formControlName="commentText" rows="4"></textarea>
-        </div>
-        <div class="card-footer card-footer-comment d-flex justify-content-end">
-            <button class="btn btn-primary btn-sm" (click)="addNewComment()" [ngStyle]="{'width': '67px'}" [disabled]="_isSending">
-                <span *ngIf="_isSending"><i class="fa fa-spinner fa-spin"></i></span>
-                <span *ngIf="!_isSending">Publicar</span>
-            </button>
-        </div>
-    </div>
 
-    <div class="card text card-comment" *ngFor="let comment of _comments">
-        <div class="card-header card-header-comment d-flex">
-            <img class="rounded" src="{{_imagesUrl}}/{{comment.user?.profilePicture}}" alt="" width="40" height="40">
-            <h6 class="card-header-comment-title">{{comment.user?.name}} {{comment.user?.surname}}</h6>
-        </div>
-        <div class="card-body">
-            <span>{{comment?.text}}</span>
-        </div>
-        <div class="card-footer card-footer-comment text-muted">
-            {{comment?.date.substring(0, 10)}} {{comment?.date.substring(11, 19)}}
+        <div class="card text card-comment" *ngFor="let comment of _comments">
+            <div class="card-header card-header-comment d-flex">
+                <img class="rounded pointer" src="{{_imagesUrl}}/{{comment.user?.profilePicture}}" width="40" height="40" (click)="showProfile(comment.user?.id)">
+                <h6 class="card-header-comment-title pointer" (click)="showProfile(comment.user?.id)">{{comment.user?.name}} {{comment.user?.surname}}</h6>
+            </div>
+            <div class="card-body">
+                <span>{{comment?.text}}</span>
+            </div>
+            <div class="card-footer card-footer-comment text-muted">
+                {{comment?.date.substring(0, 10)}} {{comment?.date.substring(11, 19)}}
+            </div>
         </div>
     </div>
 </div>

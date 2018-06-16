@@ -17,7 +17,7 @@
             <div *ngIf="!_messagesService.isDeleting.getValue()">
                 <button class="btn btn-danger btn-sm" (click)="deleteMessage()"><i class="fas fa-trash-alt icon-with-text"></i>Eliminar</button>
                 <button class="btn btn-secondary btn-sm" [ngStyle]="{'margin-left': '5px'}" (click)="markAsUnread()"><i class="fas fa-book icon-with-text"></i>Marcar como no leído</button>
-                <button class="btn btn-primary btn-sm" [ngStyle]="{'margin-left': '5px'}"><i class="fas fa-reply icon-with-text"></i>Responder</button>
+                <button class="btn btn-primary btn-sm" [ngStyle]="{'margin-left': '5px'}" (click)="replyMessage(_message)"><i class="fas fa-reply icon-with-text"></i>Responder</button>
             </div>
             <div class="alert alert-danger alert-sm" role="alert" *ngIf="_messagesService.isDeleting.getValue()">
                 <span>¿Borrar mensaje?</span>

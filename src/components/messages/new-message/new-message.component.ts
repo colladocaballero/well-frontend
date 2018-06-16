@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormGroup, FormControl } from '@angular/forms';
 import { User } from '../../../models/User';
@@ -16,6 +16,9 @@ export class NewMessageComponent {
     private _formMessage:FormGroup;
     private _friends:User[];
     private _unsub:Subject<void>;
+    private _replyTitle:string;
+    private _replyTo:string;
+    private _replyName:string;
 
     constructor(
         public activeModal:NgbActiveModal,
@@ -27,8 +30,12 @@ export class NewMessageComponent {
     }
 
     ngOnInit() {
-        this._homeService.getFriends();
-        this.getFriends();
+        this._homeService.getFriends(localStorage.getItem("userId"));
+        if (this._replyTo) {
+            this.createForm();
+        } else {
+            this.getFriends();
+        }
     }
 
     getFriends():void {
@@ -44,27 +51,38 @@ export class NewMessageComponent {
 
     createForm():void {
         this._formMessage = new FormGroup({
-            title: new FormControl(""),
+            title: new FormControl(this._replyTitle ? this._replyTitle : ""),
             message: new FormControl("")
         });
 
-        this._friends.forEach(f => {
-            this._formMessage.addControl(`check${f.id}`, new FormControl());
-        });
+        if (!this._replyTo) {
+            this._friends.forEach(f => {
+                this._formMessage.addControl(`check${f.id}`, new FormControl());
+            });
+        }
     }
 
     sendMessage():void {
-        let receiversIds:string[] = [];
+        if (!this._replyTo) {
+            let receiversIds:string[] = [];
 
-        for (let i = 2; i < Object.keys(this._formMessage.controls).length; i++) {
-            if (this._formMessage.controls[Object.keys(this._formMessage.controls)[i]].value) receiversIds.push(this._friends[i - 2].id);
-        }
+            for (let i = 2; i < Object.keys(this._formMessage.controls).length; i++) {
+                if (this._formMessage.controls[Object.keys(this._formMessage.controls)[i]].value) receiversIds.push(this._friends[i - 2].id);
+            }
 
-        if (receiversIds.length > 0) {
-            this._messagesService.sendMessage(this._formMessage.controls["title"].value, this._formMessage.controls["message"].value, localStorage.getItem("userId"), receiversIds)
-                .subscribe(
-                    response => this.activeModal.close()
-                );
+            if (receiversIds.length > 0) {
+                this._messagesService.sendMessage(this._formMessage.controls["title"].value, this._formMessage.controls["message"].value, localStorage.getItem("userId"), receiversIds)
+                    .subscribe(
+                        response => this.activeModal.close()
+                    );
+            }
+        } else {
+            if (this._formMessage.controls["message"].value.length > 0) {
+                this._messagesService.sendMessage(this._formMessage.controls["title"].value, this._formMessage.controls["message"].value, localStorage.getItem("userId"), [this._replyTo])
+                    .subscribe(
+                        response => this.activeModal.close()
+                    );
+            }
         }
     }
 

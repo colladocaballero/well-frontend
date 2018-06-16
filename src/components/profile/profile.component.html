@@ -1,0 +1,47 @@
+<div class="container" *ngIf="_userDetails">
+  	<div class="card hovercard">
+		<div class="card-background">
+			<img class="card-bkimg" alt="" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}">
+
+		</div>
+		<div class="useravatar">
+				<img alt="" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}">
+				<div class="card-info">
+					<span style="margin-left: 55%;">Descripcion</span>
+				</div>
+		</div>
+		<div class="card-info">
+			<span class="card-title">{{_userDetails?.name}} {{_userDetails?.surname}}</span>
+		</div>
+	</div>
+	<div [ngStyle]="{'margin-top': '10px'}">
+		<ngb-tabset>
+			<ngb-tab>
+				<ng-template ngbTabTitle><b>Comentarios</b></ng-template>
+				<ng-template ngbTabContent>
+					<div [ngStyle]="{'margin-top': '5px'}">
+						<comments></comments>
+					</div>
+				</ng-template>
+			</ngb-tab>
+			
+			<ngb-tab>
+				<ng-template ngbTabTitle><b>Amigos</b></ng-template>
+				<ng-template ngbTabContent>
+					<div [ngStyle]="{'margin-top': '5px'}">
+						<friends></friends>
+					</div>
+				</ng-template>
+			</ngb-tab>
+			
+			<ngb-tab>
+				<ng-template ngbTabTitle><b>Fotos</b></ng-template>
+				<ng-template ngbTabContent>
+					<div [ngStyle]="{'margin-top': '5px'}">
+						<gallery></gallery>
+					</div>
+				</ng-template>
+			</ngb-tab>
+		</ngb-tabset>
+	</div>
+</div>

@@ -4,6 +4,8 @@ import { MessagesService } from '../../../services/messages.service';
 import { ConfigService } from '../../../services/config.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NewMessageComponent } from '../new-message/new-message.component';
 
 @Component({
     selector: 'message',
@@ -18,7 +20,8 @@ export class MessageComponent {
 
     constructor(
         private _messagesService:MessagesService,
-        private _configService:ConfigService
+        private _configService:ConfigService,
+        private _modalService:NgbModal
     ) {
         this._imagesUrl = _configService.getImagesUrl();
         this._unsub = new Subject();
@@ -54,6 +57,13 @@ export class MessageComponent {
                     this._messagesService.isDeleting.next(false);
                 }
             );
+    }
+
+    replyMessage(message:Message):void {
+        const modalRef = this._modalService.open(NewMessageComponent);
+        modalRef.componentInstance._replyTo = message.userTransmitterId;
+        modalRef.componentInstance._replyTitle = `RE: ${message.title}`;
+        modalRef.componentInstance._replyName = message.userTransmitter.name;
     }
 
     ngOnDestroy() {

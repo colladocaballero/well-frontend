@@ -22,7 +22,7 @@ export class HomeComponent {
         this._imagesUrl = _configService.getImagesUrl();
         this._unsub = new Subject();
         this.getUserDetails();
-        _homeService.getUserDetails();
+        _homeService.getUserDetails(localStorage.getItem("userId"));
     }
 
     getUserDetails():void {

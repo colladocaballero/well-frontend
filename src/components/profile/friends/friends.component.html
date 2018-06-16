@@ -1,0 +1,13 @@
+<div class="container-fluid d-flex justify-content-center row">
+    <div class="card" *ngFor="let friend of _friends">
+        <div class="d-flex">
+            <div class="image-container">
+                <img class="image pointer" src="{{_imagesUrl}}/{{friend?.profilePicture}}" (click)="showPofile(friend.id)">
+            </div>
+            <div class="card-body">
+                <h5 class="card-title pointer" (click)="showPofile(friend.id)">{{friend?.name}} {{friend?.surname}}</h5>
+                <button class="btn btn-primary btn-sm"><i class="fas fa-user-plus icon-with-text"></i>Agregar</button>
+            </div>
+        </div>
+    </div>
+</div>

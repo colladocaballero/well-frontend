@@ -14,6 +14,10 @@ const appRoutes:Routes = [
     {
         path: 'messages',
         loadChildren: '../components/messages/messages.module#MessagesModule'
+    },
+    {
+        path: 'profile',
+        loadChildren: '../components/profile/profile.module#ProfileModule'
     }
 ];
 

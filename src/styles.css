@@ -3,8 +3,8 @@
 }
 
 .card-comment {
-    max-width: 600px;
-    min-width: 600px;
+    max-width: 600px !important;
+    min-width: 600px !important;
     margin-bottom: 20px;
 }
 
@@ -38,28 +38,28 @@
     padding: 4px !important;
 }
 
-/* width */
+.pointer {
+    cursor: pointer;
+}
+
 ::-webkit-scrollbar {
     width: 10px;
     border-top-right-radius: .25rem;
     border-bottom-right-radius: .25rem;
 }
 
-/* Track */
 ::-webkit-scrollbar-track {
     background: #f1f1f1;
     border-top-right-radius: .25rem;
     border-bottom-right-radius: .25rem;
 }
  
-/* Handle */
 ::-webkit-scrollbar-thumb {
     background: #888;
     border-top-right-radius: .25rem;
     border-bottom-right-radius: .25rem;
 }
 
-/* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
     background: #555;
     border-top-right-radius: .25rem;

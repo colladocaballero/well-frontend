@@ -6,6 +6,7 @@ import { HomeService } from '../../../services/home.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'comments',
@@ -24,7 +25,8 @@ export class CommentsComponent {
     constructor(
         private _commentsService:CommentsService,
         private _configService:ConfigService,
-        private _homeService:HomeService
+        private _homeService:HomeService,
+        private _router:Router
     ) {
         this._unsub = new Subject();
     }
@@ -74,7 +76,7 @@ export class CommentsComponent {
     addNewComment() {
         if (this._commentText.value.length > 0) {
         
-        this._commentsService.addNewComment(this._userDetails.id, this._commentText.value, this.getDate())
+        this._commentsService.addNewComment(this._userDetails.id, this._commentText.value)
                 .subscribe(
                     response => {
                         this._commentsService.isSending.next(false);
@@ -85,16 +87,9 @@ export class CommentsComponent {
         }
     }
 
-    getDate():string {
-        let date = new Date();
-        let day = date.getDate();
-        let month = date.getMonth() + 1;
-        let year = date.getFullYear();
-        let hour = date.getHours();
-        let minute = date.getMinutes();
-        let second = date.getSeconds();
-
-        return `${month}/${day}/${year} ${hour}:${minute}:${second}`;
+    showProfile(userId:string):void {
+        localStorage.setItem("actualUser", userId);
+        this._router.navigate(['profile']);
     }
 
     ngOnDestroy() {

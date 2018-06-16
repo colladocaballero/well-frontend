@@ -1,0 +1,5 @@
+<div class="container-fluid">
+    <div class="d-flex justify-content-center row">
+        <img *ngFor="let photo of _photos" src="{{_urlImage}}/{{photo?.userId}}/{{photo?.fileName}}" class="images">
+    </div>
+</div>

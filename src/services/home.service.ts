@@ -22,19 +22,19 @@ export class HomeService {
         this.userFriendsSubject = new BehaviorSubject<User[]>(null);
     }
 
-    getUserDetails():void {
+    getUserDetails(userId:string):void {
         let httpHeaders:HttpHeaders = new HttpHeaders({"Content-Type":"application/json", "Authorization":`Bearer ${localStorage.getItem("authToken")}`});
 
-        this._httpClient.get(`${this._apiUrl}/home/${localStorage.getItem("userId")}`, {headers: httpHeaders})
+        this._httpClient.get(`${this._apiUrl}/home/${userId}`, {headers: httpHeaders})
             .subscribe(
                 (response:HttpResponseModel) => this.userDetailsSubject.next(response.data)
             );
     }
 
-    getFriends():void {
+    getFriends(userId:string):void {
         let httpHeaders:HttpHeaders = new HttpHeaders({"Content-Type":"application/json", "Authorization":`Bearer ${localStorage.getItem("authToken")}`});
 
-        this._httpClient.get(`${this._apiUrl}/home/${localStorage.getItem("userId")}/getfriends`, {headers: httpHeaders})
+        this._httpClient.get(`${this._apiUrl}/home/${userId}/getfriends`, {headers: httpHeaders})
             .subscribe(
                 (response:HttpResponseModel) => this.userFriendsSubject.next(response.data)
             );
