@@ -16,6 +16,7 @@ export class FriendsComponent {
     private _friends:User[];
     private _unsub:Subject<void>;
     private _imagesUrl:string;
+    private _ownProfile:boolean;
 
     constructor(
         private _homeService:HomeService,
@@ -29,6 +30,18 @@ export class FriendsComponent {
 
     ngOnInit() {
         this.getFriends();
+        this._homeService.isOwnProfile.next(localStorage.getItem('actualUser') == localStorage.getItem('userId'));
+        this.isOwnProfile();
+    }
+
+    isOwnProfile():void {
+        this._homeService.isOwnProfile
+            .pipe(takeUntil(this._unsub))
+            .subscribe(
+                response => {
+                    this._ownProfile = response;
+                }
+            );
     }
 
     getFriends():void {
@@ -36,7 +49,14 @@ export class FriendsComponent {
         this._homeService.userFriendsSubject
             .pipe(takeUntil(this._unsub))
             .subscribe(
-                response => this._friends = response
+                response => {
+                    this._friends = response;
+                    if (this._friends) {
+                        for (let i = 0; i < this._friends.length; i++) {
+                            if (this._friends[i].id == localStorage.getItem("userId")) this._friends.splice(i, 1);
+                        }
+                    }
+                }
             );
     }
 
@@ -44,5 +64,11 @@ export class FriendsComponent {
         this._homeService.getUserDetails(userId);
         this._homeService.getFriends(userId);
         localStorage.setItem("actualUser", userId);
+        this._homeService.isOwnProfile.next(localStorage.getItem('actualUser') == localStorage.getItem('userId'));
+    }
+
+    ngOnDestroy() {
+        this._unsub.next();
+        this._unsub.complete();
     }
 }

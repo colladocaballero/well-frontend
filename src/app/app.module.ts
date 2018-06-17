@@ -23,6 +23,7 @@ import { routing, appRoutingProviders } from './app.routing';
 import { AuthGuard } from './auth.guard';
 import { PhotosService } from '../services/photo.service';
 import { CommentsService } from '../services/comments.service';
+import { FriendRequestsService } from '../services/friend-requests.service';
 
 @NgModule({
 	declarations: [
@@ -48,6 +49,7 @@ import { CommentsService } from '../services/comments.service';
 		MessagesService,
 		PhotosService,
 		CommentsService,
+		FriendRequestsService,
 		AuthGuard,
 		NgbModal,
 		NgbActiveModal

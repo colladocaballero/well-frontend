@@ -18,6 +18,10 @@ const appRoutes:Routes = [
     {
         path: 'profile',
         loadChildren: '../components/profile/profile.module#ProfileModule'
+    },
+    {
+        path: 'search',
+        loadChildren: '../components/search/search.module#SearchModule'
     }
 ];
 
