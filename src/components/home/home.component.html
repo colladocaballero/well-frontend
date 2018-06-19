@@ -1,6 +1,6 @@
 <div class="container-fluid d-flex" *ngIf="_userDetails">
     <div class="col-sm-2" [ngStyle]="{'width': '200px'}">
-        <img class="rounded" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}" [ngStyle]="{'height': '200px'}">
+        <img class="rounded pointer" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}" (click)="changeProfilePicture()" [ngStyle]="{'max-height': '200px', 'max-width': '200px'}">
         <h4 [ngStyle]="{'margin-top': '10px'}">{{_userDetails?.name}} {{_userDetails?.surname}}</h4>
     </div>
 

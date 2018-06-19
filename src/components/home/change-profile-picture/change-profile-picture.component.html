@@ -1,0 +1,14 @@
+<div class="modal-header">
+    <h4 class="modal-title">Cambiar foto de perfil</h4>
+    <button type="button" class="close" aria-label="Close" (click)="_ngbActiveModal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="d-flex justify-content-center row">
+        <img *ngFor="let photo of _photos" src="{{_imagesUrl}}/{{photo?.userId}}/{{photo?.fileName}}" (click)="changeProfilePicture(photo)" [ngStyle]="{'height': '150px', 'margin': '0 5px'}">
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary btn-sm" (click)="_ngbActiveModal.close('Close click')"><i class="fas fa-times icon-with-text"></i> Cerrar</button>
+</div>

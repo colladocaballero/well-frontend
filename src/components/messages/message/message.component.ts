@@ -35,7 +35,7 @@ export class MessageComponent {
         this._messagesService.markAsUnread(this._message.id)
             .pipe(takeUntil(this._unsub))
             .subscribe(
-                response => this._messagesService.getUserMessages(localStorage.getItem("userId"))
+                response => this._messagesService.getUserMessages()
             );
     }
 
@@ -52,7 +52,7 @@ export class MessageComponent {
             .pipe(takeUntil(this._unsub))
             .subscribe(
                 response => {
-                    this._messagesService.getUserMessages(localStorage.getItem("userId"));
+                    this._messagesService.getUserMessages();
                     this._messagesService.showMessage.next(false);
                     this._messagesService.isDeleting.next(false);
                 }

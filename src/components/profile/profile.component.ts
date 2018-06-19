@@ -12,6 +12,7 @@ import { takeUntil } from 'rxjs/operators';
 	styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent {
+	private _tabsStyle:string = "justified";
 	private _userDetails: User;
 	private _imagesUrl: string;
 	private _unsub: Subject<void>;

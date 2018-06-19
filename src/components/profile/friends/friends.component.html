@@ -6,7 +6,10 @@
             </div>
             <div class="card-body">
                 <h5 class="card-title pointer" (click)="showPofile(friend.id)">{{friend?.name}} {{friend?.surname}}</h5>
-                <button class="btn btn-primary btn-sm"><i class="fas fa-user-plus icon-with-text"></i>Agregar</button>
+                <div class="d-flex justify-content-end user-info">
+                    <button class="btn btn-primary btn-sm" *ngIf="!_ownProfile && !friend.areFriends" [disabled]="friend.hasFriendRequest" (click)="sendFriendRequest(friend.id)"><i class="fas fa-user-plus icon-with-text"></i>Agregar</button>
+                    <button class="btn btn-danger btn-sm" *ngIf="_ownProfile" (click)="removeFriend(friend?.id)"><i class="fas fa-user-minus icon-with-text"></i>Eliminar</button>
+                </div>
             </div>
         </div>
     </div>

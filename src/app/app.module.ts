@@ -12,6 +12,8 @@ import { LoginNavbarComponent } from '../components/navbars/login-navbar/login-n
 import { HomeNavbarComponent } from '../components/navbars/home-navbar/home-navbar.component';
 import { RegisterComponent } from '../components/register/register.component';
 import { NewMessageComponent } from '../components/messages/new-message/new-message.component';
+import { UploadPhotoComponent } from '../components/navbars/home-navbar/upload-photo/upload-photo.component';
+import { ChangeProfilePictureComponent } from '../components/home/change-profile-picture/change-profile-picture.component';
 
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user.service';
@@ -23,6 +25,7 @@ import { routing, appRoutingProviders } from './app.routing';
 import { AuthGuard } from './auth.guard';
 import { PhotosService } from '../services/photo.service';
 import { CommentsService } from '../services/comments.service';
+import { FriendRequestsService } from '../services/friend-requests.service';
 
 @NgModule({
 	declarations: [
@@ -30,7 +33,9 @@ import { CommentsService } from '../services/comments.service';
 		LoginNavbarComponent,
 		HomeNavbarComponent,
 		RegisterComponent,
-		NewMessageComponent
+		NewMessageComponent,
+		UploadPhotoComponent,
+		ChangeProfilePictureComponent
 	],
 	imports: [
 		BrowserModule,
@@ -48,11 +53,16 @@ import { CommentsService } from '../services/comments.service';
 		MessagesService,
 		PhotosService,
 		CommentsService,
+		FriendRequestsService,
 		AuthGuard,
 		NgbModal,
 		NgbActiveModal
 	],
 	bootstrap: [AppComponent],
-    entryComponents: [NewMessageComponent]
+    entryComponents: [
+		NewMessageComponent,
+		UploadPhotoComponent,
+		ChangeProfilePictureComponent
+	]
 })
 export class AppModule { }

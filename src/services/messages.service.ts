@@ -25,9 +25,9 @@ export class MessagesService {
         this.isDeleting = new BehaviorSubject<boolean>(false);
     }
 
-    getUserMessages(userId:string):void {
+    getUserMessages():void {
         let httpHeaders:HttpHeaders = new HttpHeaders({"Content-Type": "application/json"});
-        this._httpClient.get(`${this._apiUrl}/messages/${userId}`, {headers: httpHeaders})
+        this._httpClient.get(`${this._apiUrl}/messages/${localStorage.getItem("userId")}`, {headers: httpHeaders})
             .subscribe(
                 (response:HttpResponseModel) => {
                     this.messagesSub.next(response.data.messages);

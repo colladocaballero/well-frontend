@@ -8,12 +8,12 @@ import { Photo } from '../models/Photo';
 @Injectable()
 export class PhotosService {
     public photos:BehaviorSubject<Photo[]>;
-    public url:string;
+    public _apiUrl:string;
     constructor(
         private _http:HttpClient,
         private _configservice:ConfigService
     ) {
-        this.url =_configservice.getApiUrl();
+        this._apiUrl =_configservice.getApiUrl();
         this.photos = new BehaviorSubject<Photo[]>([]);
     }
 
@@ -38,7 +38,7 @@ export class PhotosService {
                 }
             };
 
-            xhr.open('POST',this.url+"/Photos", true);
+            xhr.open('POST',`${this._apiUrl}/Photos`, true);
             xhr.send(formData);
         });
     }
@@ -46,7 +46,7 @@ export class PhotosService {
     getPhotos(userId:string):void {
         let httpHeaders:HttpHeaders = new HttpHeaders({"Content-Type":"application/json", "Authorization":`Bearer ${localStorage.getItem("authToken")}`});
 
-        this._http.get(`${this.url}/photos/${userId}`, {headers: httpHeaders})
+        this._http.get(`${this._apiUrl}/photos/${userId}`, {headers: httpHeaders})
             .subscribe(
                 (response:HttpResponseModel) => this.photos.next(response.data)
 

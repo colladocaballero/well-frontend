@@ -4,6 +4,10 @@ import { User } from '../../models/User';
 import { ConfigService } from '../../services/config.service';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { MessagesService } from '../../services/messages.service';
+import { FriendRequestsService } from '../../services/friend-requests.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ChangeProfilePictureComponent } from './change-profile-picture/change-profile-picture.component';
 
 @Component({
     selector: 'home',
@@ -17,12 +21,20 @@ export class HomeComponent {
     
     constructor(
         private _homeService:HomeService,
-        private _configService:ConfigService
+        private _configService:ConfigService,
+        private _messagesService:MessagesService,
+        private _friendRequestsService:FriendRequestsService,
+        private _ngbModal:NgbModal
     ) {
         this._imagesUrl = _configService.getImagesUrl();
         this._unsub = new Subject();
         this.getUserDetails();
-        _homeService.getUserDetails(localStorage.getItem("userId"));
+    }
+
+    ngOnInit() {
+        this._homeService.getUserDetails(localStorage.getItem("userId"));
+        this._messagesService.getUserMessages();
+        this._friendRequestsService.getUserFriendRequests();
     }
 
     getUserDetails():void {
@@ -31,6 +43,10 @@ export class HomeComponent {
             .subscribe(
                 response => this._userDetails = response
             );
+    }
+
+    changeProfilePicture():void {
+        const modalRef = this._ngbModal.open(ChangeProfilePictureComponent, {size: "lg"})
     }
 
     ngOnDestroy() {
