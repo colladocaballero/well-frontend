@@ -1,0 +1,22 @@
+<div class="modal-header">
+    <h4 class="modal-title">Subir Foto</h4>
+    <button type="button" class="close" (click)="_ngbActiveModal.dismiss('Cross click')">&times;</button>
+</div>
+
+<div class="modal-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col">
+                <div class="custom-file">
+                    <input type="file" (change)="fileChangeEvent($event)" class="custom-file-input" id="customFile">
+                    <label class="custom-file-label" for="customFile">{{_fileName}}</label>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-secondary btn-sm" (click)="_ngbActiveModal.dismiss('Close click')"><i class="fas fa-times icon-with-text"></i> Cerrar</button>
+    <button type="button" class="btn btn-primary btn-sm" (click)="uploadPhoto()"><i class="fas fa-upload icon-with-text"></i> Subir</button>
+</div>

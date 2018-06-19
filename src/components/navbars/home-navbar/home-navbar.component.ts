@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { UserService } from '../../../services/user.service';
 import { PhotosService } from '../../../services/photo.service';
 import { Router } from '@angular/router';
-import { ConfigService } from '../../../services/config.service';
 import { HomeService } from '../../../services/home.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { CommentsService } from '../../../services/comments.service';
@@ -10,6 +9,8 @@ import { FriendRequestsService } from '../../../services/friend-requests.service
 import { takeUntil } from 'rxjs/operators';
 import { Subject } from 'rxjs';
 import { MessagesService } from '../../../services/messages.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { UploadPhotoComponent } from './upload-photo/upload-photo.component';
 
 @Component({
     selector: 'home-navbar',
@@ -17,7 +18,6 @@ import { MessagesService } from '../../../services/messages.service';
 })
 
 export class HomeNavbarComponent {
-    public filesToUpload;
     private _unreadMessagesCount:number;
     private _friendRequestsCount:number;
     private _unsub:Subject<void>;
@@ -26,12 +26,12 @@ export class HomeNavbarComponent {
     constructor(
         private _userService:UserService,
         private _photosService:PhotosService,
-        private _configService:ConfigService,
         private _homeService:HomeService,
         private _router:Router,
         private _commentsService:CommentsService,
         private _messagesService:MessagesService,
-        private _friendRequestsService:FriendRequestsService
+        private _friendRequestsService:FriendRequestsService,
+        private _ngbModal:NgbModal
     ) {
         this._unsub = new Subject();
     }
@@ -64,15 +64,8 @@ export class HomeNavbarComponent {
             );
     }
 
-    fileChangeEvent(fileInput:any) {
-        this.filesToUpload = <Array<File>>fileInput.target.files;
-    }
-
-    addPhoto() {
-        if (this.filesToUpload) {
-            this._photosService.uploadPhoto(this.filesToUpload);
-            this._photosService.getPhotos(localStorage.getItem("userId"));
-        }
+    uploadPhoto():void {
+        const modalRef = this._ngbModal.open(UploadPhotoComponent);
     }
 
     showProfile():void {
@@ -90,7 +83,8 @@ export class HomeNavbarComponent {
     }
 
     search():void {
-        this._homeService.searchUsers(this._formSearch.controls["query"].value);
+        localStorage.setItem("searchQuery", this._formSearch.controls["query"].value);
+        this._homeService.searchUsers(localStorage.getItem("searchQuery"));
         this._router.navigate(['search']);
     }
 

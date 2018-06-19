@@ -23,6 +23,7 @@ export class RegisterComponent {
 
     private _unsub:Subject<void>;
     private _isRequestingRegister:boolean;
+    private _isRequestingLogin:boolean;
     private _existingEmail:boolean;
 
     constructor(
@@ -34,13 +35,25 @@ export class RegisterComponent {
     }
 
     ngOnInit() {
+        this.getIsRequestingRegister();
+        this.getIsRequestingLogin();
+        this.createForm();
+    }
+
+    getIsRequestingRegister():void {
         this._userService.isRequestingRegister
             .pipe(takeUntil(this._unsub))
             .subscribe(
-                result => this._isRequestingRegister = result
+                response => this._isRequestingRegister = response
             );
+    }
 
-        this.createForm();
+    getIsRequestingLogin():void {
+        this._userService.isRequestingLogin
+            .pipe(takeUntil(this._unsub))
+            .subscribe(
+                response => this._isRequestingLogin = response
+            );
     }
 
     createForm():void {

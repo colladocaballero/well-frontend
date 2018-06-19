@@ -13,8 +13,8 @@
                     <h5 class="card-title pointer" (click)="showPofile(user.id)">{{user?.name}} {{user?.surname}}</h5>
                     <div class="d-flex justify-content-between user-info">
                         <span [ngStyle]="{'margin-right': '10px'}">{{user?.country}} {{user.country && user.city ? "-" : ""}} {{user?.city}}</span>
-                        <button class="btn btn-primary btn-sm" *ngIf="!user.areFriends"><i class="fas fa-user-plus icon-with-text"></i>Agregar</button>
-                        <button class="btn btn-danger btn-sm" *ngIf="user.areFriends"><i class="fas fa-user-minus icon-with-text"></i>Eliminar</button>
+                        <button class="btn btn-primary btn-sm" *ngIf="!user.areFriends" (click)="sendFriendRequest(user.id)" [disabled]="user.hasFriendRequest"><i class="fas fa-user-plus icon-with-text"></i>Agregar</button>
+                        <button class="btn btn-danger btn-sm" *ngIf="user.areFriends" (click)="removeFriend(user.id)"><i class="fas fa-user-minus icon-with-text"></i>Eliminar</button>
                     </div>
                 </div>
             </div>

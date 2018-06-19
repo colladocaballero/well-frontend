@@ -39,11 +39,11 @@
                         <li class="list-group-item d-flex justify-content-between align-items-center middle-messages unread-message" *ngFor="let friendRequest of _friendRequests; let i = index;" [ngClass]="{'first-message': i == 0, 'middle-messages': i != 0 && i != _messages.length - 1, 'last-message': i == _messages.length - 1}">
                             <div>
                                 <img class="message-profile-picture" src="{{_imagesUrl}}/{{friendRequest.user1?.profilePicture}}" width="38" height="38">
-                                <span class="message-title">{{friendRequest.user1?.name}} {{friendRequest.user1?.surname}}</span>
+                                <span class="message-title" (click)="showPofile(friendRequest.user1?.id)">{{friendRequest.user1?.name}} {{friendRequest.user1?.surname}}</span>
                             </div>
                             <div [ngStyle]="{'margin-right': '3px'}">
-                                <button class="btn btn-danger btn-sm"><i class="fas fa-times icon-with-text"></i> Rechazar</button>
-                                <button class="btn btn-success btn-sm" [ngStyle]="{'margin-left': '5px'}"><i class="fas fa-check icon-with-text"></i> Aceptar</button>
+                                <button class="btn btn-danger btn-sm" (click)="rejectFriendRequest(friendRequest.id)"><i class="fas fa-times icon-with-text"></i> Rechazar</button>
+                                <button class="btn btn-success btn-sm" [ngStyle]="{'margin-left': '5px'}" (click)="acceptFriendRequest(friendRequest)"><i class="fas fa-check icon-with-text"></i> Aceptar</button>
                             </div>
                         </li>
                     </ul>

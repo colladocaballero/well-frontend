@@ -53,8 +53,8 @@
                 </div>
                 <div class="row">
                     <div class="form-group col">
-                        <button class="btn btn-success btn-sm" type="button" style="width: 100%" (click)="registerUser(_registerForm)" [disabled]="!_registerForm.valid || _isRequestingRegister || _userService.isRequestingLogin.getValue()">
-                            <i class="fa fa-spinner fa-spin" *ngIf="_isRequestingRegister"></i>
+                        <button class="btn btn-success btn-sm" type="button" style="width: 100%" (click)="registerUser(_registerForm)" [disabled]="!_registerForm.valid || _isRequestingRegister || isRequestingLogin">
+                            <div *ngIf="_isRequestingRegister"><i class="fa fa-spinner fa-spin"></i></div>
                             <span *ngIf="!_isRequestingRegister">Registrarse</span>
                         </button>
                     </div>

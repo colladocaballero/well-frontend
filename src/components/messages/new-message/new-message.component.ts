@@ -70,7 +70,7 @@ export class NewMessageComponent {
                 if (this._formMessage.controls[Object.keys(this._formMessage.controls)[i]].value) receiversIds.push(this._friends[i - 2].id);
             }
 
-            if (receiversIds.length > 0) {
+            if (receiversIds.length > 0 && this._formMessage.controls["message"].value.length > 0) {
                 this._messagesService.sendMessage(this._formMessage.controls["title"].value, this._formMessage.controls["message"].value, localStorage.getItem("userId"), receiversIds)
                     .subscribe(
                         response => this.activeModal.close()

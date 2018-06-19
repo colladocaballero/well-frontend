@@ -5,43 +5,50 @@
 
 		</div>
 		<div class="useravatar">
-				<img alt="" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}">
-				<div class="card-info">
-					<span style="margin-left: 55%;">Descripcion</span>
+			<img alt="" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}">
+			<div class="card-info" [ngStyle]="{'margin-left': '55%', 'color': 'black', 'font-size': '16px', 'padding': '5px 10px'}">
+				<div [ngStyle]="{'bottom': '24px'}">
+					<span class="card-title">{{_userDetails?.birthday.substring(8, 10)}}/{{_userDetails?.birthday.substring(5, 7)}}/{{_userDetails?.birthday.substring(0, 4)}}</span>
 				</div>
+				<div [ngStyle]="{'bottom': '0'}" *ngIf="_userDetails?.country && _userDetails?.city">
+					<span class="card-title">{{_userDetails?.country}} | {{_userDetails?.city}}</span>
+				</div>
+			</div>
 		</div>
-		<div class="card-info">
+		<div class="card-info" [ngStyle]="{'margin-left': '27%', 'margin-right': '57%', 'color': 'black', 'font-size': '24px', 'padding': '5px 10px'}">
 			<span class="card-title">{{_userDetails?.name}} {{_userDetails?.surname}}</span>
 		</div>
 	</div>
-	<div [ngStyle]="{'margin-top': '10px'}">
-		<ngb-tabset>
-			<ngb-tab>
-				<ng-template ngbTabTitle><b>Comentarios</b></ng-template>
-				<ng-template ngbTabContent>
-					<div [ngStyle]="{'margin-top': '5px'}">
-						<comments></comments>
-					</div>
-				</ng-template>
-			</ngb-tab>
-			
-			<ngb-tab>
-				<ng-template ngbTabTitle><b>Amigos</b></ng-template>
-				<ng-template ngbTabContent>
-					<div [ngStyle]="{'margin-top': '5px'}">
-						<friends></friends>
-					</div>
-				</ng-template>
-			</ngb-tab>
-			
-			<ngb-tab>
-				<ng-template ngbTabTitle><b>Fotos</b></ng-template>
-				<ng-template ngbTabContent>
-					<div [ngStyle]="{'margin-top': '5px'}">
-						<gallery></gallery>
-					</div>
-				</ng-template>
-			</ngb-tab>
+	<div>
+		<ngb-tabset [justify]="_tabsStyle">
+			<div class="tabs-container">
+				<ngb-tab>
+					<ng-template ngbTabTitle><b>Comentarios</b></ng-template>
+					<ng-template ngbTabContent>
+						<div class="profile-section-container">
+							<comments></comments>
+						</div>
+					</ng-template>
+				</ngb-tab>
+				
+				<ngb-tab>
+					<ng-template ngbTabTitle><b>Amigos</b></ng-template>
+					<ng-template ngbTabContent>
+						<div class="profile-section-container">
+							<friends></friends>
+						</div>
+					</ng-template>
+				</ngb-tab>
+				
+				<ngb-tab>
+					<ng-template ngbTabTitle><b>Fotos</b></ng-template>
+					<ng-template ngbTabContent>
+						<div class="profile-section-container">
+							<gallery></gallery>
+						</div>
+					</ng-template>
+				</ngb-tab>
+			</div>
 		</ngb-tabset>
 	</div>
 </div>

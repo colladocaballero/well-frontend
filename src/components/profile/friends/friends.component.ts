@@ -5,6 +5,7 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { ConfigService } from '../../../services/config.service';
 import { Router } from '@angular/router';
+import { FriendRequestsService } from '../../../services/friend-requests.service';
 
 @Component({
     selector: 'friends',
@@ -21,6 +22,7 @@ export class FriendsComponent {
     constructor(
         private _homeService:HomeService,
         private _configService:ConfigService,
+        private _friendRequestsService:FriendRequestsService,
         private _router:Router
     ) {
         this._friends = [];
@@ -49,14 +51,21 @@ export class FriendsComponent {
         this._homeService.userFriendsSubject
             .pipe(takeUntil(this._unsub))
             .subscribe(
-                response => {
-                    this._friends = response;
-                    if (this._friends) {
-                        for (let i = 0; i < this._friends.length; i++) {
-                            if (this._friends[i].id == localStorage.getItem("userId")) this._friends.splice(i, 1);
-                        }
-                    }
-                }
+                response => this._friends = response
+            );
+    }
+
+    sendFriendRequest(user2Id:string) {
+        this._friendRequestsService.sendFriendRequest(user2Id)
+            .subscribe(
+                response => this.getFriends()
+            );
+    }
+
+    removeFriend(user2Id:string):void {
+        this._homeService.removeFriend(user2Id)
+            .subscribe(
+                response => this._homeService.getFriends(localStorage.getItem("actualUser"))
             );
     }
 

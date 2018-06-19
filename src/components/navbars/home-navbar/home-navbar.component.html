@@ -29,7 +29,7 @@
                             <button class="btn btn-primary btn-sm" type="submit"><i class="fas fa-search"></i></button>
                         </div>
                     </div>
-                    <button class="btn btn-primary btn-sm" type="button" [ngStyle]="{'margin-left': '10px'}" data-toggle="modal" data-target="#uploadPhoto">
+                    <button class="btn btn-primary btn-sm" type="button" [ngStyle]="{'margin-left': '10px'}" (click)="uploadPhoto()">
                         <i class="fas fa-camera "></i>
                     </button>
                 </div>
@@ -48,30 +48,10 @@
 </nav>
 
 <!-- Upload photo modal -->
-<div class="modal fade" id="uploadPhoto">
+<!-- <div class="modal fade" id="uploadPhoto">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">Subir Foto</h4>
-                <button type="button" class="close" data-dismiss="modal">X</button>
-            </div>
-
-            <div class="modal-body">
-                <div class="container-fluid">
-                    <div class="row">
-                        <div class="col">
-                            <div class="card">
-                            <input type="file"  id="txtImage" class="form-control" (change)="fileChangeEvent($event)">
-                            </div>
-                        </div>
-                    </div>
-                    </div>
-            </div>
-
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary"  data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" (click)="addPhoto()">Subir</button>
-            </div>
+            
         </div>
     </div>
-</div>
+</div> -->

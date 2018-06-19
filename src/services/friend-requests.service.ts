@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { FriendRequest } from '../models/FriendRequest';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ConfigService } from './config.service';
 import { HttpResponseModel } from '../models/HttpResponseModel';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class FriendRequestsService {
@@ -29,5 +30,23 @@ export class FriendRequestsService {
                     this.requestsCountSubject.next(response.data.requestsCount);
                 }
             );
+    }
+
+    sendFriendRequest(user2Id:string):Observable<HttpResponseModel> {
+        let httpHeaders:HttpHeaders = new HttpHeaders({"Content-Type": "application/json"});
+        return this._httpClient.post(`${this._apiUrl}/friendrequests`, {user1Id: localStorage.getItem("userId"), user2Id: user2Id}, {headers: httpHeaders})
+            .pipe(map(response => response as HttpResponseModel));
+    }
+
+    acceptFriendRequest(friendRequest:FriendRequest):Observable<HttpResponseModel> {
+        let httpHeaders:HttpHeaders = new HttpHeaders({"Content-Type": "application/json"});
+        return this._httpClient.post(`${this._apiUrl}/friendrequests/acceptfriendrequest`, JSON.stringify(friendRequest), {headers: httpHeaders})
+            .pipe(map(response => response as HttpResponseModel));
+    }
+
+    rejectFriendRequest(id:number):Observable<HttpResponseModel> {
+        let httpHeaders:HttpHeaders = new HttpHeaders({"Content-Type": "application/json"});
+        return this._httpClient.delete(`${this._apiUrl}/friendrequests/${id}`, {headers: httpHeaders})
+            .pipe(map(response => response as HttpResponseModel));
     }
 }

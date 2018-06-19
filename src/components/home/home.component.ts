@@ -6,6 +6,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { MessagesService } from '../../services/messages.service';
 import { FriendRequestsService } from '../../services/friend-requests.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ChangeProfilePictureComponent } from './change-profile-picture/change-profile-picture.component';
 
 @Component({
     selector: 'home',
@@ -21,7 +23,8 @@ export class HomeComponent {
         private _homeService:HomeService,
         private _configService:ConfigService,
         private _messagesService:MessagesService,
-        private _friendRequestsService:FriendRequestsService
+        private _friendRequestsService:FriendRequestsService,
+        private _ngbModal:NgbModal
     ) {
         this._imagesUrl = _configService.getImagesUrl();
         this._unsub = new Subject();
@@ -40,6 +43,10 @@ export class HomeComponent {
             .subscribe(
                 response => this._userDetails = response
             );
+    }
+
+    changeProfilePicture():void {
+        const modalRef = this._ngbModal.open(ChangeProfilePictureComponent, {size: "lg"})
     }
 
     ngOnDestroy() {

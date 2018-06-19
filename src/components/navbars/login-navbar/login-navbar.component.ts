@@ -19,6 +19,7 @@ export class LoginNavbarComponent {
     
     private _unsub:Subject<void>;
     private _isRequestingLogin:boolean;
+    private _isRequestingRegister:boolean;
     private _credentials:Credentials;
     private _loginFailed:boolean;
 
@@ -30,7 +31,15 @@ export class LoginNavbarComponent {
         this._credentials = {email: "", password: ""};
         this._loginFailed = false;
         this._unsub = new Subject();
+    }
+    
+    ngOnInit() {
+        this.createForm();
+        this.getIsRequestingLogin();
+        this.getIsRequestingRegister();
+    }
 
+    createForm():void {
         this._email = new FormControl();
         this._password = new FormControl();
         this._loginForm = new FormGroup({
@@ -38,11 +47,21 @@ export class LoginNavbarComponent {
             password: this._password
         });
     }
-    
-    ngOnInit() {
-        this._userService.isRequestingLogin.subscribe(
-            result => this._isRequestingLogin = result
-        );
+
+    getIsRequestingLogin():void {
+        this._userService.isRequestingLogin
+            .pipe(takeUntil(this._unsub))
+            .subscribe(
+                response => this._isRequestingLogin = response
+            );
+    }
+
+    getIsRequestingRegister():void {
+        this._userService.isRequestingRegister
+            .pipe(takeUntil(this._unsub))
+            .subscribe(
+                response => this._isRequestingRegister = response
+            );
     }
 
     login({value, valid}:{value:Credentials, valid:boolean}) {
@@ -51,7 +70,6 @@ export class LoginNavbarComponent {
 
             if (valid) {
                 this._userService.login(value.email, value.password)
-                .pipe(takeUntil(this._unsub))
                     .subscribe(
                         result => {
                             this._userService.isRequestingLogin.next(false);

@@ -8,6 +8,8 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NewMessageComponent } from './new-message/new-message.component';
 import { FriendRequest } from '../../models/FriendRequest';
 import { FriendRequestsService } from '../../services/friend-requests.service';
+import { HomeService } from '../../services/home.service';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'messages',
@@ -28,7 +30,9 @@ export class MessagesComponent {
         private _messagesService:MessagesService,
         private _configService:ConfigService,
         private _modalService:NgbModal,
-        private _friendRequestsService:FriendRequestsService
+        private _friendRequestsService:FriendRequestsService,
+        private _homeService:HomeService,
+        private _router:Router
     ) {
         this._messages = [];
         this._friendRequests = [];
@@ -93,6 +97,28 @@ export class MessagesComponent {
 
     newMessage():void {
         const modalRef = this._modalService.open(NewMessageComponent);
+    }
+
+    acceptFriendRequest(friendRequest:FriendRequest):void {
+        this._friendRequestsService.acceptFriendRequest(friendRequest)
+            .subscribe(
+                response => this._friendRequestsService.getUserFriendRequests()
+            );
+    }
+
+    rejectFriendRequest(id:number):void {
+        this._friendRequestsService.rejectFriendRequest(id)
+            .subscribe(
+                response => this._friendRequestsService.getUserFriendRequests()
+            );
+    }
+
+    showPofile(userId:string):void {
+        this._homeService.getUserDetails(userId);
+        this._homeService.getFriends(userId);
+        localStorage.setItem("actualUser", userId);
+        this._homeService.isOwnProfile.next(localStorage.getItem('actualUser') == localStorage.getItem('userId'));
+        this._router.navigate(['profile']);
     }
 
     ngOnDestroy() {

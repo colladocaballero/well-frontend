@@ -2,16 +2,16 @@
     <div class="row">
         <div class="card text card-comment" [formGroup]="_commentForm">
             <div class="card-header card-header-comment d-flex">
-                <img class="rounded" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}" alt="" width="40" height="40px">
+                <img class="rounded" src="{{_imagesUrl}}/{{_userDetails?.profilePicture}}" [ngStyle]="{'max-height': '40px', 'max-width': '40px'}">
                 <h6 class="card-header-comment-title">{{_userDetails?.name}} {{_userDetails?.surname}}</h6>
             </div>
             <div class="card-body card-body-textarea">
                 <textarea class="textarea-comment" formControlName="commentText" rows="4"></textarea>
             </div>
             <div class="card-footer card-footer-comment d-flex justify-content-end">
-                <button class="btn btn-primary btn-sm" (click)="addNewComment()" [ngStyle]="{'width': '67px'}" [disabled]="_isSending">
+                <button class="btn btn-primary btn-sm" (click)="addNewComment()" [ngStyle]="{'width': '100px'}" [disabled]="_isSending">
                     <span *ngIf="_isSending"><i class="fa fa-spinner fa-spin"></i></span>
-                    <span *ngIf="!_isSending">Publicar</span>
+                    <span *ngIf="!_isSending"><i class="fas fa-comments icon-with-text"></i>Publicar</span>
                 </button>
             </div>
         </div>

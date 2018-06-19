@@ -12,6 +12,8 @@ import { LoginNavbarComponent } from '../components/navbars/login-navbar/login-n
 import { HomeNavbarComponent } from '../components/navbars/home-navbar/home-navbar.component';
 import { RegisterComponent } from '../components/register/register.component';
 import { NewMessageComponent } from '../components/messages/new-message/new-message.component';
+import { UploadPhotoComponent } from '../components/navbars/home-navbar/upload-photo/upload-photo.component';
+import { ChangeProfilePictureComponent } from '../components/home/change-profile-picture/change-profile-picture.component';
 
 import { ConfigService } from '../services/config.service';
 import { UserService } from '../services/user.service';
@@ -31,7 +33,9 @@ import { FriendRequestsService } from '../services/friend-requests.service';
 		LoginNavbarComponent,
 		HomeNavbarComponent,
 		RegisterComponent,
-		NewMessageComponent
+		NewMessageComponent,
+		UploadPhotoComponent,
+		ChangeProfilePictureComponent
 	],
 	imports: [
 		BrowserModule,
@@ -55,6 +59,10 @@ import { FriendRequestsService } from '../services/friend-requests.service';
 		NgbActiveModal
 	],
 	bootstrap: [AppComponent],
-    entryComponents: [NewMessageComponent]
+    entryComponents: [
+		NewMessageComponent,
+		UploadPhotoComponent,
+		ChangeProfilePictureComponent
+	]
 })
 export class AppModule { }
