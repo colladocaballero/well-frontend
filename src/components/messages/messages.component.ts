@@ -10,6 +10,7 @@ import { FriendRequest } from '../../models/FriendRequest';
 import { FriendRequestsService } from '../../services/friend-requests.service';
 import { HomeService } from '../../services/home.service';
 import { Router } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'messages',
@@ -32,7 +33,8 @@ export class MessagesComponent {
         private _modalService:NgbModal,
         private _friendRequestsService:FriendRequestsService,
         private _homeService:HomeService,
-        private _router:Router
+        private _router:Router,
+        private _titleService:Title
     ) {
         this._messages = [];
         this._friendRequests = [];
@@ -47,6 +49,7 @@ export class MessagesComponent {
         this.getRequestsCount();
         this._messagesService.getUserMessages();
         this._friendRequestsService.getUserFriendRequests();
+        this._titleService.setTitle("Well - Mensajes");
     }
 
     getUserMessages():void {

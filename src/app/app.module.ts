@@ -4,7 +4,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import fontawesome from '@fortawesome/fontawesome';
 import solid from '@fortawesome/fontawesome-free-solid';
-fontawesome.library.add(solid);
 import { NgbModule, NgbModal, NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { AppComponent } from './app.component';
@@ -65,4 +64,8 @@ import { FriendRequestsService } from '../services/friend-requests.service';
 		ChangeProfilePictureComponent
 	]
 })
-export class AppModule { }
+export class AppModule { 
+	constructor() {
+		fontawesome.library.add(solid);
+	}
+ }
