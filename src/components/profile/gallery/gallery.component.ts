@@ -5,6 +5,8 @@ import { HttpClient } from '@angular/common/http';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { Photo } from '../../../models/Photo';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CarouselComponent } from './carousel/carousel.component';
 
 @Component({
 	selector: 'gallery',
@@ -20,7 +22,8 @@ export class GalleryComponent {
 	constructor(
 		private _photosService:PhotosService,
 		private _configService:ConfigService,
-		private _httpClient:HttpClient
+		private _httpClient:HttpClient,
+		private _ngbModal:NgbModal
 	) {
 		this._url = _configService.getApiUrl();
 		this._urlImage = _configService.getImagesUrl();
@@ -38,7 +41,12 @@ export class GalleryComponent {
 			.subscribe(
 				response => this._photos = response
 			);
-    }
+	}
+	
+	showPhoto(photo:Photo):void {
+		const modalRef = this._ngbModal.open(CarouselComponent, {size: "lg"});
+		modalRef.componentInstance._photo = photo;
+	}
 
     ngOnDestroy(){
 		this._unsub.next();

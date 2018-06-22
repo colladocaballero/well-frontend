@@ -7,6 +7,7 @@ import { ProfileComponent } from './profile.component';
 import { CommentsComponent } from './comments/comments.component';
 import { FriendsComponent } from './friends/friends.component';
 import { GalleryComponent } from './gallery/gallery.component';
+import { CarouselComponent } from './gallery/carousel/carousel.component';
 
 
 @NgModule({
@@ -14,12 +15,16 @@ import { GalleryComponent } from './gallery/gallery.component';
 		ProfileComponent,
 		CommentsComponent,
 		FriendsComponent,
-		GalleryComponent
+		GalleryComponent,
+		CarouselComponent
 	],
 	imports: [
 		CommonModule,
 		NgbModule,
 		profileRouting
+	],
+	entryComponents: [
+		CarouselComponent
 	]
 })
 export class ProfileModule {

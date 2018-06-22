@@ -8,6 +8,7 @@ import { MessagesService } from '../../services/messages.service';
 import { FriendRequestsService } from '../../services/friend-requests.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ChangeProfilePictureComponent } from './change-profile-picture/change-profile-picture.component';
+import { Title } from '@angular/platform-browser';
 
 @Component({
     selector: 'home',
@@ -24,7 +25,8 @@ export class HomeComponent {
         private _configService:ConfigService,
         private _messagesService:MessagesService,
         private _friendRequestsService:FriendRequestsService,
-        private _ngbModal:NgbModal
+        private _ngbModal:NgbModal,
+        private _titleService:Title
     ) {
         this._imagesUrl = _configService.getImagesUrl();
         this._unsub = new Subject();
@@ -35,6 +37,7 @@ export class HomeComponent {
         this._homeService.getUserDetails(localStorage.getItem("userId"));
         this._messagesService.getUserMessages();
         this._friendRequestsService.getUserFriendRequests();
+        this._titleService.setTitle("Well - Home");
     }
 
     getUserDetails():void {

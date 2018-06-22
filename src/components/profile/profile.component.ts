@@ -4,6 +4,7 @@ import { User } from '../../models/User';
 import { ConfigService } from '../../services/config.service';
 import { Subscription, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { Title } from '@angular/platform-browser';
 
 
 @Component({
@@ -19,7 +20,8 @@ export class ProfileComponent {
 
 	constructor(
 		private _homeService: HomeService,
-		private _configService: ConfigService
+		private _configService: ConfigService,
+		private _titleService:Title
 	) {
 		this._imagesUrl = _configService.getImagesUrl();
 		this._unsub = new Subject();
@@ -28,6 +30,7 @@ export class ProfileComponent {
 	ngOnInit() {
 		this._homeService.getUserDetails(localStorage.getItem("actualUser"));
 		this.getUserDetails();
+		this._titleService.setTitle("Well - Perfil");
 	}
 
 	getUserDetails(): void {
